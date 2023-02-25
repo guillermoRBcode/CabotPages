@@ -9,6 +9,7 @@
 			background: url("images/background.jpg") no-repeat center center fixed;
 			background-size: cover;
 			animation: fade 10s ease-in-out infinite;
+			text-shadow: 0 0 10px #000000;
 		}
 
 		@keyframes fade {
@@ -32,12 +33,13 @@
 
 		.time {
 			position: absolute;
-			top: 10px;
-			right: 10px;
+			top: 20px;
+			right: 20px;
 			color: #ffffff;
-			font-size: 24px;
+			font-size: 36px;
 			font-weight: bold;
 			font-family: Arial, sans-serif;
+			text-shadow: 0 0 10px #000000;
 		}
 
 		.links {
@@ -49,6 +51,7 @@
 			font-family: Arial, sans-serif;
 			background: url("images/links-background.jpg") no-repeat center center fixed;
 			background-size: cover;
+			text-shadow: 0 0 10px #000000;
 		}
 
 		.links a {
@@ -65,13 +68,13 @@
 		<script>
 			function updateTime() {
 				var date = new Date();
-				var hours = date.getHours();
+				var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
 				var minutes = date.getMinutes();
 				var seconds = date.getSeconds();
 				hours = hours < 10 ? "0" + hours : hours;
 				minutes = minutes < 10 ? "0" + minutes : minutes;
 				seconds = seconds < 10 ? "0" + seconds : seconds;
-				var timeString = hours + ":" + minutes + ":" + seconds;
+				var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
 				document.querySelector(".time").textContent = timeString;
 			}
 
