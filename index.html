@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +10,7 @@
 			background: url("images/background.jpg") no-repeat center center fixed;
 			background-size: cover;
 			animation: fade 10s ease-in-out infinite;
-			text-shadow: 0 0 10px black;
+			text-shadow: 0 0 50px black !important;
 		}
 
 		@keyframes fade {
@@ -39,57 +40,6 @@
 			font-size: 24px;
 			font-weight: bold;
 			font-family: Arial, sans-serif;
-			text-shadow: 0 0 10px black;
-		}
-
-		.calendar {
-			position: absolute;
-			top: 80px;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 80%;
-			background-color: #ffffff;
-			padding: 10px;
-			box-shadow: 0 0 10px black;
-			border-radius: 10px;
-			font-family: Arial, sans-serif;
-		}
-
-		.calendar h2 {
-			font-size: 24px;
-			font-weight: bold;
-			margin-top: 0;
-			text-align: center;
-		}
-
-		.calendar table {
-			width: 100%;
-			border-collapse: collapse;
-			margin-top: 10px;
-		}
-
-		.calendar th,
-		.calendar td {
-			border: 1px solid #000000;
-			padding: 5px;
-			text-align: center;
-		}
-
-		.calendar th {
-			background-color: #cccccc;
-		}
-
-		.calendar .today {
-			background-color: #ffffcc;
-		}
-
-		.events {
-			margin-top: 10px;
-			font-size: 18px;
-		}
-
-		.events li {
-			margin-bottom: 5px;
 		}
 
 		.links {
@@ -108,11 +58,64 @@
 			text-decoration: none;
 			margin-right: 20px;
 		}
+
+		.calendar {
+			position: absolute;
+			top: 80px;
+			left: 10px;
+			color: #ffffff;
+			font-size: 18px;
+			font-family: Arial, sans-serif;
+			background: url("images/calendar-background.jpg") no-repeat center center fixed;
+			background-size: cover;
+			padding: 20px;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+		}
+
+		.calendar h2 {
+			font-size: 24px;
+			font-weight: bold;
+			margin-top: 0;
+			margin-bottom: 10px;
+		}
+
+		.calendar ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.calendar li {
+			margin-bottom: 10px;
+		}
+
+		.calendar .event-date {
+			font-size: 16px;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+
+		.calendar .event-title {
+			font-size: 14px;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+
+		.calendar .event-description {
+			font-size: 12px;
+			margin-bottom: 5px;
+		}
+
+		.calendar .event-location {
+			font-size: 12px;
+			font-style: italic;
+		}
+
 	</style>
 </head>
 <body>
 	<img class="logo" src="images/logo.png" alt="Logo">
-	<div class="time">
+<div class="time">
 		<script>
 			function updateTime() {
 				var date = new Date();
