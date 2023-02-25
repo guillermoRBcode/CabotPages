@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Information Screen</title>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 	<style type="text/css">
 		body {
 			margin: 0;
@@ -10,6 +11,10 @@
 			background-size: cover;
 			animation: fade 10s ease-in-out infinite;
 			text-shadow: 0 0 10px #000000;
+			font-family: 'Open Sans', sans-serif;
+			color: #ffffff;
+			font-size: 24px;
+			line-height: 1.5;
 		}
 
 		@keyframes fade {
@@ -35,11 +40,27 @@
 			position: absolute;
 			top: 20px;
 			right: 20px;
-			color: #ffffff;
-			font-size: 36px;
+			font-size: 48px;
 			font-weight: bold;
-			font-family: Arial, sans-serif;
-			text-shadow: 0 0 10px #000000;
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		.links {
+			position: absolute;
+			bottom: 10px;
+			left: 10px;
+			background: url("images/links-background.jpg") no-repeat center center fixed;
+			background-size: cover;
+			padding: 10px;
+			border-radius: 5px;
+		}
+
+		.links a {
+			color: #ffffff;
+			text-decoration: none;
+			margin-right: 20px;
+			font-weight: bold;
 		}
 
 		.weather {
@@ -47,30 +68,37 @@
 			top: 100px;
 			left: 50%;
 			transform: translateX(-50%);
-			color: #ffffff;
-			font-size: 48px;
-			font-weight: bold;
-			font-family: Arial, sans-serif;
-			text-shadow: 0 0 10px #000000;
+			padding: 20px;
+			background-color: rgba(255, 255, 255, 0.2);
+			border-radius: 5px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
 			text-align: center;
 		}
 
-		.links {
-			position: absolute;
-			bottom: 10px;
-			left: 10px;
-			color: #ffffff;
-			font-size: 18px;
-			font-family: Arial, sans-serif;
-			background: url("images/links-background.jpg") no-repeat center center fixed;
-			background-size: cover;
-			text-shadow: 0 0 10px #000000;
+		.weather-icon {
+			height: 100px;
+			margin-bottom: 10px;
 		}
 
-		.links a {
-			color: #ffffff;
-			text-decoration: none;
-			margin-right: 20px;
+		.temperature {
+			font-size: 48px;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		.weather-description {
+			font-size: 36px;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		.location {
+			font-size: 24px;
+			font-weight: bold;
+			margin-bottom: 10px;
 		}
 	</style>
 </head>
@@ -92,24 +120,33 @@
 			}
 
 			setInterval(updateTime, 1000);
-		</script>
-	</div>
 
-	<div class="weather">
-				<script>
 			function updateWeather() {
-				var url = "https://api.openweathermap.org/data/2.5/weather?q=sarasota,us&units=imperial&appid=f526db4d3273f8c84309e0254c4f0e71";
+				var apiKey = "f526db4d3273f8c84309e0254c4f0e71";
+				var city = "sarasota";
+				var state = "FL";
+				var country = "US";
+				var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + state + "," + country + "&appid=" + apiKey;
+
 				fetch(url)
-					.then(response => response.json())
-					.then(data => {
-						document.querySelector(".temperature").textContent = "Temperature: " + data.main.temp + " °F";
-						document.querySelector(".description").textContent = "Description: " + data.weather[0].description;
-						document.querySelector(".humidity").textContent = "Humidity: " + data.main.humidity + "%";
-						document.querySelector(".wind").textContent = "Wind Speed: " + data.wind.speed + " mph";
-					})
-					.catch(error => console.error(error));
+				.then(response => response.json())
+				.then(data => {
+					var temp = Math.round((data.main.temp - 273.15) * 9/5 + 32);
+					var description = data.weather[0].description;
+					var iconCode = data.weather[0].icon;
+					var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+
+					var weatherString = temp + "°F " + description;
+					document.querySelector(".weather").textContent = weatherString;
+
+					var icon = document.createElement("img");
+					icon.setAttribute("src", iconUrl);
+					document.querySelector(".weather").appendChild(icon);
+				})
+				.catch(error => console.log(error));
 			}
 
 			updateWeather();
 			setInterval(updateWeather, 3600000);
 		</script>
+		
