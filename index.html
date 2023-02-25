@@ -121,32 +121,33 @@
 
 			setInterval(updateTime, 1000);
 
-			function updateWeather() {
-				var apiKey = "f526db4d3273f8c84309e0254c4f0e71";
-				var city = "sarasota";
-				var state = "FL";
-				var country = "US";
-				var url = "https://api.openweathermap.org/data/2.5/forecast?id=524901&appid=f526db4d3273f8c84309e0254c4f0e71";
+function updateWeather() {
+    var apiKey = "f526db4d3273f8c84309e0254c4f0e71";
+    var city = "sarasota";
+    var state = "FL";
+    var country = "US";
+    var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + state + "," + country + "&appid=" + apiKey;
 
-				fetch(url)
-				.then(response => response.json())
-				.then(data => {
-					var temp = Math.round((data.main.temp - 273.15) * 9/5 + 32);
-					var description = data.weather[0].description;
-					var iconCode = data.weather[0].icon;
-					var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            console.log("API response:", data);
+            var temp = Math.round((data.main.temp - 273.15) * 9/5 + 32);
+            var description = data.weather[0].description;
+            var iconCode = data.weather[0].icon;
+            var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
 
-					var weatherString = temp + "°F " + description;
-					document.querySelector(".weather").textContent = weatherString;
+            var weatherString = temp + "°F " + description;
+            document.querySelector(".weather").textContent = weatherString;
 
-					var icon = document.createElement("img");
-					icon.setAttribute("src", iconUrl);
-					document.querySelector(".weather").appendChild(icon);
-				})
-				.catch(error => console.log(error));
-			}
+            var icon = document.createElement("img");
+            icon.setAttribute("src", iconUrl);
+            document.querySelector(".weather").appendChild(icon);
+        })
+        .catch(error => console.log(error));
+}
 
-			updateWeather();
-			setInterval(updateWeather, 3600000);
+updateWeather();
+setInterval(updateWeather, 3600000);
 		</script>
 		
