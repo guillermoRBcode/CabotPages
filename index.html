@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Website</title>
+	<style>
+		body {
+			background-image: url(imagesource/backgrounds/backgroundimage1.jpeg);
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+			transition: background-image 1s ease-in-out;
+		}
+		#logo {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			height: 80px;
+			width: 120px;
+			background-image: url(imagesource/logo.png);
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
+		#time {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			color: white;
+			font-size: 24px;
+			font-family: Arial, sans-serif;
+		}
+	</style>
+</head>
+<body>
+	<div id="logo"></div>
+	<div id="time"></div>
+	<script>
+		function getBackgrounds() {
+			var backgrounds = [];
+			var files = new XMLHttpRequest();
+			files.open('GET', 'imagesource/backgrounds/', false);
+			files.send(null);
+			var xmlDoc = files.responseXML;
+			var entries = xmlDoc.getElementsByTagName('entry');
+			for (var i = 0; i < entries.length; i++) {
+				var filename = entries[i].getElementsByTagName('title')[0].childNodes[0].nodeValue;
+				backgrounds.push(filename);
+			}
+			return backgrounds;
+		}
+		var backgrounds = getBackgrounds();
+		var currentBackground = 0;
+		function changeBackground() {
+			currentBackground++;
+			if (currentBackground >= backgrounds.length) {
+				currentBackground = 0;
+			}
+			document.body.style.backgroundImage = 'url(imagesource/backgrounds/' + backgrounds[currentBackground] + ')';
+			setTimeout(changeBackground, 5000);
+		}
+		changeBackground();
+		function updateTime() {
+			var now = new Date();
+			var hours = now.getHours();
+			var minutes = now.getMinutes();
+			var seconds = now.getSeconds();
+			document.getElementById("time").innerHTML = hours + ":" + minutes + ":" + seconds;
+		}
+		updateTime();
+		setInterval(updateTime, 1000);
+	</script>
+</body>
+</html>
