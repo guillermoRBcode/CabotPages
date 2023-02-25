@@ -65,11 +65,11 @@
 
 		.weather {
 			position: absolute;
-			top: 100px;
+			top: 60px;
 			left: 50%;
 			transform: translateX(-50%);
 			padding: 20px;
-			background-color: rgba(255, 255, 255, 0.2);
+			background-color: rgba(0, 0, 0, 0.6);
 			border-radius: 5px;
 			display: flex;
 			align-items: center;
@@ -104,57 +104,61 @@
 </head>
 <body>
 	<img class="logo" src="images/logo.png" alt="Logo">
-<div class="weather">
-  <img class="weather-icon">
-  <div class="temperature"></div>
-  <div class="weather-description"></div>
-  <div class="location"></div>
-</div>
+	<div class="weather">
+		<img class="weather-icon">
+		<div class="temperature"></div>
+		<div class="weather-description"></div>
+		<div class="location"></div>
+	</div>
 
+	<div class="time"></div>
 
-	<div class="time">
-		<script>
-			function updateTime() {
-				var date = new Date();
-				var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
-				var minutes = date.getMinutes();
-				var seconds = date.getSeconds();
-				hours = hours < 10 ? "0" + hours : hours;
-				minutes = minutes < 10 ? "0" + minutes : minutes;
-				seconds = seconds < 10 ? "0" + seconds : seconds;
-				var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
-				document.querySelector(".time").textContent = timeString;
-			}
+	<script>
+		function updateTime() {
+  var date = new Date();
+  var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+  var minutes = date.getMinutes();
+  var seconds = date.getSeconds();
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+  var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
+  document.querySelector(".time").textContent = timeString;
+}
 
-			setInterval(updateTime, 1000);
+setInterval(updateTime, 1000);
 
 function updateWeather() {
-    var apiKey = "f526db4d3273f8c84309e0254c4f0e71";
-    var city = "sarasota";
-    var state = "FL";
-    var country = "US";
-    var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + state + "," + country + "&appid=" + apiKey;
+  var apiKey = "f526db4d3273f8c84309e0254c4f0e71";
+  var city = "sarasota";
+  var state = "FL";
+  var country = "US";
+  var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + state + "," + country + "&appid=" + apiKey;
 
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            console.log("API response:", data);
-            var temp = Math.round((data.main.temp - 273.15) * 9/5 + 32);
-            var description = data.weather[0].description;
-            var iconCode = data.weather[0].icon;
-            var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      console.log("API response:", data);
+      var temp = Math.round((data.main.temp - 273.15) * 9/5 + 32);
+      var description = data.weather[0].description;
+      var iconCode = data.weather[0].icon;
+      var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
 
-            var weatherString = temp + "°F " + description;
-            document.querySelector(".weather").textContent = weatherString;
+      var weatherString = temp + "°F " + description;
+      document.querySelector(".temperature").textContent = weatherString;
 
-            var icon = document.createElement("img");
-            icon.setAttribute("src", iconUrl);
-            document.querySelector(".weather").appendChild(icon);
-        })
-        .catch(error => console.log(error));
+      var icon = document.createElement("img");
+      icon.setAttribute("src", iconUrl);
+      icon.setAttribute("class", "weather-icon");
+      document.querySelector(".weather").appendChild(icon);
+
+      var locationString = data.name + ", " + data.sys.country;
+      document.querySelector(".location").textContent = locationString;
+      document.querySelector(".weather").classList.remove("hidden");
+    })
+    .catch(error => console.log(error));
 }
 
 updateWeather();
 setInterval(updateWeather, 3600000);
-		</script>
-		
+</script>
