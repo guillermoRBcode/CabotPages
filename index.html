@@ -1,80 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>My Website</title>
-	<style>
+	<title>Information Screen</title>
+	<style type="text/css">
 		body {
-			background-image: url(imagesource/backgrounds/backgroundimage1.jpeg);
+			margin: 0;
+			padding: 0;
+			background: url("https://scontent-mia3-2.xx.fbcdn.net/v/t39.30808-6/329139387_1549618232209114_7739511245410549886_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=NxlRhOIFXeQAX-b_u53&_nc_ht=scontent-mia3-2.xx&oh=00_AfAbpVTg2PfV6HY2WGfTrFywp4cdLDV-VlVd0zQOxI81Eg&oe=63F811F7") no-repeat center center fixed;
 			background-size: cover;
-			background-position: center;
-			background-repeat: no-repeat;
-			transition: background-image 1s ease-in-out;
+			animation: fade 10s ease-in-out infinite;
 		}
-		#logo {
-			position: absolute;
-			top: 20px;
-			left: 20px;
-			height: 80px;
-			width: 120px;
-			background-image: url(imagesource/logo.png);
-			background-size: contain;
-			background-repeat: no-repeat;
+
+		@keyframes fade {
+			0% {
+				background-image: url("https://scontent-mia3-1.xx.fbcdn.net/v/t39.30808-6/329365645_704431878047593_2061232149778504280_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=XcJ13jk9MQ4AX_HdAXo&_nc_ht=scontent-mia3-1.xx&oh=00_AfCpl-aFaix6-C0nkMf26mA4IKvxJt3-Hy43Qw76v_cX2g&oe=63F70B63");
+			}
+			50% {
+				background-image: url("https://scontent-mia3-1.xx.fbcdn.net/v/t39.30808-6/329329373_1502548716934545_2123567017239938153_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=xICGkvqQ_KYAX80d-a6&_nc_ht=scontent-mia3-1.xx&oh=00_AfDgIbgg8FltEEpmVoQa0w_WpfR2-ag2-MsXxy4wnv24VQ&oe=63F78616");
+			}
+			100% {
+				background-image: url("https://scontent-mia3-1.xx.fbcdn.net/v/t39.30808-6/329908906_6055403584520501_2749121141202152528_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=elxTm1OZryMAX_Cd2Xz&_nc_ht=scontent-mia3-1.xx&oh=00_AfAPBrl5KmTA1D-p1uvtlTLdqFSkLwn8g6EhNOUswgZnrQ&oe=63F82B1B");
+			}
 		}
-		#time {
+
+		.logo {
 			position: absolute;
-			top: 20px;
-			right: 20px;
-			color: white;
+			top: 10px;
+			left: 10px;
+			height: 50px;
+		}
+
+		.time {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			color: #ffffff;
 			font-size: 24px;
+			font-weight: bold;
 			font-family: Arial, sans-serif;
+		}
+
+		.links {
+			position: absolute;
+			bottom: 10px;
+			left: 10px;
+			color: #ffffff;
+			font-size: 18px;
+			font-family: Arial, sans-serif;
+			background: url("https://i.imgur.com/avUbGkZ.jpg") no-repeat center center fixed;
+			background-size: cover;
+		}
+
+		.links a {
+			color: #ffffff;
+			text-decoration: none;
+			margin-right: 20px;
 		}
 	</style>
 </head>
 <body>
-	<div id="logo"></div>
-	<div id="time"></div>
-	<script>
-		function getBackgrounds() {
-			var backgrounds = [];
-			var files = new XMLHttpRequest();
-			files.open('GET', 'imagesource/backgrounds/', false);
-			files.send(null);
-			var xmlDoc = files.responseXML;
-			var entries = xmlDoc.getElementsByTagName('entry');
-			for (var i = 0; i < entries.length; i++) {
-				var filename = entries[i].getElementsByTagName('title')[0].childNodes[0].nodeValue;
-				backgrounds.push(filename);
+	<img class="logo" src="https://scontent-mia3-2.xx.fbcdn.net/v/t39.30808-6/292164111_401449545336105_2384139486023970301_n.png?_nc_cat=103&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=XOy-MnR3MnQAX-mOAxU&_nc_ht=scontent-mia3-2.xx&oh=00_AfAKe4PTseqU_dUABALDEGhsxC_KoKZNiYv-PX9eT27oww&oe=63F80683" alt="Logo">
+
+	<div class="time">
+		<script>
+			function updateTime() {
+				var date = new Date();
+				var hours = date.getHours();
+				var minutes = date.getMinutes();
+				var seconds = date.getSeconds();
+				hours = hours < 10 ? "0" + hours : hours;
+				minutes = minutes < 10 ? "0" + minutes : minutes;
+				seconds = seconds < 10 ? "0" + seconds : seconds;
+				var timeString = hours + ":" + minutes + ":" + seconds;
+				document.querySelector(".time").textContent = timeString;
 			}
-			return backgrounds;
-		}
-		var backgrounds = getBackgrounds();
-		var currentBackground = 0;
-		function changeBackground() {
-			currentBackground++;
-			if (currentBackground >= backgrounds.length) {
-				currentBackground = 0;
-			}
-			document.body.style.backgroundImage = 'url(imagesource/backgrounds/' + backgrounds[currentBackground] + ')';
-			document.body.style.opacity = 1;
-			setTimeout(function() {
-				document.body.style.transition = 'background-image 1s ease-in-out, opacity 1s ease-in-out';
-				document.body.style.opacity = 0;
-				setTimeout(function() {
-					document.body.style.transition = 'none';
-					changeBackground();
-				}, 1000);
-			}, 25000);
-		}
-		changeBackground();
-		function updateTime() {
-			var now = new Date();
-			var hours = now.getHours();
-			var minutes = now.getMinutes();
-			var seconds = now.getSeconds();
-			document.getElementById("time").innerHTML = hours + ":" + minutes + ":" + seconds;
-		}
-		updateTime();
-		setInterval(updateTime, 1000);
-	</script>
+
+			setInterval(updateTime, 1000);
+		</script>
+	</div>
+
+	<div class="links">
+		<a href="http://www.examplelink1.com">Link 1</a>
+		<a href="http://www.examplelink2.com">Link 2</a>
+		<a href="http://www.examplelink3.com">Link 3</a>
+    		<a href="http://www.examplelink4.com">Link 4</a>
+		<a href="http://www.examplelink5.com">Link 5</a>
+</div>
 </body>
 </html>
+
