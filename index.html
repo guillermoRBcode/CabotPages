@@ -9,7 +9,7 @@
 			background: url("images/background.jpg") no-repeat center center fixed;
 			background-size: cover;
 			animation: fade 10s ease-in-out infinite;
-			text-shadow: 0 0 10px #000000;
+			text-shadow: 0 0 10px black;
 		}
 
 		@keyframes fade {
@@ -33,13 +33,63 @@
 
 		.time {
 			position: absolute;
-			top: 20px;
-			right: 20px;
+			top: 10px;
+			right: 10px;
 			color: #ffffff;
-			font-size: 36px;
+			font-size: 24px;
 			font-weight: bold;
 			font-family: Arial, sans-serif;
-			text-shadow: 0 0 10px #000000;
+			text-shadow: 0 0 10px black;
+		}
+
+		.calendar {
+			position: absolute;
+			top: 80px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 80%;
+			background-color: #ffffff;
+			padding: 10px;
+			box-shadow: 0 0 10px black;
+			border-radius: 10px;
+			font-family: Arial, sans-serif;
+		}
+
+		.calendar h2 {
+			font-size: 24px;
+			font-weight: bold;
+			margin-top: 0;
+			text-align: center;
+		}
+
+		.calendar table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 10px;
+		}
+
+		.calendar th,
+		.calendar td {
+			border: 1px solid #000000;
+			padding: 5px;
+			text-align: center;
+		}
+
+		.calendar th {
+			background-color: #cccccc;
+		}
+
+		.calendar .today {
+			background-color: #ffffcc;
+		}
+
+		.events {
+			margin-top: 10px;
+			font-size: 18px;
+		}
+
+		.events li {
+			margin-bottom: 5px;
 		}
 
 		.links {
@@ -51,7 +101,6 @@
 			font-family: Arial, sans-serif;
 			background: url("images/links-background.jpg") no-repeat center center fixed;
 			background-size: cover;
-			text-shadow: 0 0 10px #000000;
 		}
 
 		.links a {
@@ -63,7 +112,6 @@
 </head>
 <body>
 	<img class="logo" src="images/logo.png" alt="Logo">
-
 	<div class="time">
 		<script>
 			function updateTime() {
@@ -89,3 +137,5 @@
 	</div>
 </body>
 </html>
+
+	
