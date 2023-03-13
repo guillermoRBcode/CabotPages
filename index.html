@@ -3,31 +3,205 @@
   <head>
     <meta charset="UTF-8">
     <title>Password Protected Website</title>
+    <style>
+      body {
+        background-color: #1a1a1a;
+        color: #fff;
+        font-family: Arial, sans-serif;
+      }
+      h1 {
+        font-size: 36px;
+        font-weight: bold;
+      }
+      h2 {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      input[type="text"], textarea {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 2px solid #dc143c;
+        border-radius: 4px;
+        background-color: #1a1a1a;
+        color: #fff;
+        resize: none;
+      }
+      button {
+        background-color: #dc143c;
+        border: none;
+        color: #fff;
+        padding: 16px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      .error {
+        color: #dc143c;
+      }
+      .file-list {
+        margin-top: 20px;
+      }
+      .file-item {
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #333;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .file-item:hover {
+        background-color: #444;
+      }
+      .file-item h3 {
+        margin: 0;
+      }
+      .file-item p {
+        margin: 5px 0;
+      }
+    </style>
   </head>
   <body>
-    <h1>Welcome to our website</h1>
     <div id="password-prompt">
-      <label for="password">Please enter the password:</label>
+      <h1>Password Protected Website</h1>
+      <p>To access this website, please enter the password:</p>
       <input type="password" id="password" />
       <button onclick="checkPassword()">Submit</button>
-      <p id="error" style="color: red;"></p>
+      <p id="error" class="error"></p>
     </div>
 
     <div id="file-storage" style="display: none;">
       <h2>File Storage</h2>
-      <!-- Add your file storage code here -->
+      <button onclick="createNewFile()">New File</button>
+      <div id="file-list" class="file-list"></div>
+      <div id="file-editor" style="display: none;">
+        <h3 id="file-name"></h3>
+        <textarea id="file-content"></textarea>
+        <button onclick="saveFile()">Save</button>
+        <button onclick="cancelEdit()">Cancel</button>
+        <a id="download-link" download></a>
+      </div>
     </div>
 
     <script>
+      var passwordPrompt = document.getElementById("password-prompt");
+      var fileStorage = document.getElementById("file-storage");
+      var fileList = document.getElementById("file-list");
+      var fileEditor = document.getElementById("file-editor");
+      var fileNameElement = document.getElementById("file-name");
+      var fileContentElement = document.getElementById("file-content");
+      var downloadLink = document.getElementById("download-link");
+      var passwordInput = document.getElementById("password");
+      var errorElement = document.getElementById("error");
+      var githubUsername = "guillermoRBcode";
+      var githubRepo = "CabotPages";
+
       function checkPassword() {
-        var password = document.getElementById("password").value;
+        var password = passwordInput.value;
         if (password === "admin321") {
-          document.getElementById("password-prompt").style.display = "none";
-          document.getElementById("file-storage").style.display = "block";
-        } else {
-          document.getElementById("error").textContent = "Wrong.";
-        }
-      }
-    </script>
-  </body>
-</html>
+passwordPrompt.style.display = "none";
+fileStorage.style.display = "block";
+loadFiles();
+} else {
+errorElement.textContent = "Wrong password.";
+}
+}
+  function loadFiles() {
+    fileList.innerHTML = "";
+    fetch(`https://api.github.com/repos/${githubUsername}/${githubRepo}/contents/`)
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(file => {
+          if (file.type === "file" && file.name.endsWith(".txt")) {
+            var fileItem = document.createElement("div");
+            fileItem.classList.add("file-item");
+            fileItem.addEventListener("click", () => editFile(file.name, file.download_url));
+            var fileName = document.createElement("h3");
+            fileName.textContent = file.name;
+            var fileSize = document.createElement("p");
+            fileSize.textContent = formatBytes(file.size);
+            fileItem.appendChild(fileName);
+            fileItem.appendChild(fileSize);
+            fileList.appendChild(fileItem);
+          }
+        });
+      })
+      .catch(error => console.error(error));
+  }
+
+  function createNewFile() {
+    var fileName = prompt("Enter the name of the new file:");
+    if (fileName && fileName.endsWith(".txt")) {
+      fetch(`https://api.github.com/repos/${githubUsername}/${githubRepo}/contents/${fileName}`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `token your-access-token`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: "Create new file",
+          content: ""
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          editFile(data.name, data.download_url);
+        })
+        .catch(error => console.error(error));
+    }
+  }
+
+  function editFile(name, downloadUrl) {
+    fileNameElement.textContent = name;
+    fetch(downloadUrl)
+      .then(response => response.text())
+      .then(data => {
+        fileContentElement.value = atob(data);
+        fileEditor.style.display = "block";
+        fileList.style.display = "none";
+      })
+      .catch(error => console.error(error));
+  }
+
+  function saveFile() {
+    var fileName = fileNameElement.textContent;
+    var fileContent = btoa(fileContentElement.value);
+    fetch(`https://api.github.com/repos/${githubUsername}/${githubRepo}/contents/${fileName}`, {
+      method: "PUT",
+      headers: {
+        "Authorization": `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`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: "Update file",
+        content: fileContent
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        fileEditor.style.display = "none";
+        fileList.style.display = "block";
+        loadFiles();
+      })
+      .catch(error => console.error(error));
+  }
+
+  function cancelEdit() {
+    fileEditor.style.display = "none";
+    fileList.style.display = "block";
+  }
+
+  function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  }
+</script>
+
