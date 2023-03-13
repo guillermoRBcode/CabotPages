@@ -1,164 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Information Screen</title>
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
-	<style type="text/css">
-		body {
-			margin: 0;
-			padding: 0;
-			background: url("images/background.jpg") no-repeat center center fixed;
-			background-size: cover;
-			animation: fade 10s ease-in-out infinite;
-			text-shadow: 0 0 10px #000000;
-			font-family: 'Open Sans', sans-serif;
-			color: #ffffff;
-			font-size: 24px;
-			line-height: 1.5;
-		}
+  <head>
+    <meta charset="UTF-8">
+    <title>Password Protected Website</title>
+  </head>
+  <body>
+    <h1>Welcome to our website</h1>
+    <div id="password-prompt">
+      <label for="password">Please enter the password:</label>
+      <input type="password" id="password" />
+      <button onclick="checkPassword()">Submit</button>
+      <p id="error" style="color: red;"></p>
+    </div>
 
-		@keyframes fade {
-			0% {
-				background-image: url("images/background1.jpg");
-			}
-			50% {
-				background-image: url("images/background2.jpg");
-			}
-			100% {
-				background-image: url("images/background3.jpg");
-			}
-		}
+    <div id="file-storage" style="display: none;">
+      <h2>File Storage</h2>
+      <!-- Add your file storage code here -->
+    </div>
 
-		.logo {
-			position: absolute;
-			top: 10px;
-			left: 10px;
-			height: 50px;
-		}
-
-		.time {
-			position: absolute;
-			top: 20px;
-			right: 20px;
-			font-size: 48px;
-			font-weight: bold;
-			text-align: right;
-			margin-bottom: 20px;
-		}
-
-		.links {
-			position: absolute;
-			bottom: 10px;
-			left: 10px;
-			background: url("images/links-background.jpg") no-repeat center center fixed;
-			background-size: cover;
-			padding: 10px;
-			border-radius: 5px;
-		}
-
-		.links a {
-			color: #ffffff;
-			text-decoration: none;
-			margin-right: 20px;
-			font-weight: bold;
-		}
-
-		.weather {
-			position: absolute;
-			top: 60px;
-			left: 50%;
-			transform: translateX(-50%);
-			padding: 20px;
-			background-color:rgb(255,0,0);opacity:0.0;
-			border-radius: 5px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			text-align: center;
-		}
-
-		.weather-icon {
-			height: 100px;
-			margin-bottom: 10px;
-		}
-
-		.temperature {
-			font-size: 48px;
-			font-weight: bold;
-			margin-bottom: 10px;
-		}
-
-		.weather-description {
-			font-size: 36px;
-			font-weight: bold;
-			margin-bottom: 10px;
-		}
-
-		.location {
-			font-size: 24px;
-			font-weight: bold;
-			margin-bottom: 10px;
-		}
-	</style>
-</head>
-<body>
-	<img class="logo" src="images/logo.png" alt="Logo">
-	<div class="weather">
-		<img class="weather-icon">
-		<div class="temperature"></div>
-		<div class="weather-description"></div>
-		<div class="location"></div>
-	</div>
-
-	<div class="time"></div>
-
-	<script>
-		function updateTime() {
-  var date = new Date();
-  var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
-  hours = hours < 10 ? "0" + hours : hours;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  seconds = seconds < 10 ? "0" + seconds : seconds;
-  var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
-  document.querySelector(".time").textContent = timeString;
-}
-
-setInterval(updateTime, 1000);
-
-function updateWeather() {
-  var apiKey = "f526db4d3273f8c84309e0254c4f0e71";
-  var city = "sarasota";
-  var state = "FL";
-  var country = "US";
-  var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + state + "," + country + "&appid=" + apiKey;
-
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      console.log("API response:", data);
-      var temp = Math.round((data.main.temp - 273.15) * 9/5 + 32);
-      var description = data.weather[0].description;
-      var iconCode = data.weather[0].icon;
-      var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
-
-      var weatherString = temp + "°F " + description;
-      document.querySelector(".temperature").textContent = weatherString;
-
-      var icon = document.createElement("img");
-      icon.setAttribute("src", iconUrl);
-      icon.setAttribute("class", "weather-icon");
-      document.querySelector(".weather").appendChild(icon);
-
-      var locationString = data.name + ", " + data.sys.country;
-      document.querySelector(".location").textContent = locationString;
-      document.querySelector(".weather").classList.remove("hidden");
-    })
-    .catch(error => console.log(error));
-}
-
-updateWeather();
-setInterval(updateWeather, 3600000);
-</script>
+    <script>
+      function checkPassword() {
+        var password = document.getElementById("password").value;
+        if (password === "admin321") {
+          document.getElementById("password-prompt").style.display = "none";
+          document.getElementById("file-storage").style.display = "block";
+        } else {
+          document.getElementById("error").textContent = "Wrong.";
+        }
+      }
+    </script>
+  </body>
+</html>
