@@ -112,7 +112,7 @@ errorElement.textContent = "Wrong password.";
 }
   function loadFiles() {
     fileList.innerHTML = "";
-    fetch(`https://api.github.com/repos/${githubUsername}/${githubRepo}/images/`)
+    fetch(`https://api.github.com/repos/${githubUsername}/${githubRepo}/contents/`)
       .then(response => response.json())
       .then(data => {
         data.forEach(file => {
@@ -136,7 +136,7 @@ errorElement.textContent = "Wrong password.";
   function createNewFile() {
     var fileName = prompt("Enter the name of the new file:");
     if (fileName && fileName.endsWith(".txt")) {
-      fetch(`https://api.github.com/repos/${githubUsername}/${githubRepo}/images/${fileName}`, {
+      fetch(`https://api.github.com/repos/${githubUsername}/${githubRepo}/contents/${fileName}`, {
         method: "PUT",
         headers: {
           "Authorization": `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`,
