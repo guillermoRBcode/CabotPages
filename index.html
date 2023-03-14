@@ -1,207 +1,164 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Password Protected Website</title>
-    <style>
-      body {
-        background-color: #1a1a1a;
-        color: #fff;
-        font-family: Arial, sans-serif;
-      }
-      h1 {
-        font-size: 36px;
-        font-weight: bold;
-      }
-      h2 {
-        font-size: 24px;
-        font-weight: bold;
-      }
-      input[type="text"], textarea {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 8px 0;
-        box-sizing: border-box;
-        border: 2px solid #dc143c;
-        border-radius: 4px;
-        background-color: #1a1a1a;
-        color: #fff;
-        resize: none;
-      }
-      button {
-        background-color: #dc143c;
-        border: none;
-        color: #fff;
-        padding: 16px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 4px;
-      }
-      .error {
-        color: #dc143c;
-      }
-      .file-list {
-        margin-top: 20px;
-      }
-      .file-item {
-        margin: 10px 0;
-        padding: 10px;
-        background-color: #333;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-      .file-item:hover {
-        background-color: #444;
-      }
-      .file-item h3 {
-        margin: 0;
-      }
-      .file-item p {
-        margin: 5px 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="password-prompt">
-      <h1>Password Protected Website</h1>
-      <p>To access this website, please enter the password:</p>
-      <input type="password" id="password" />
-      <button onclick="checkPassword()">Submit</button>
-      <p id="error" class="error"></p>
-    </div>
+<head>
+	<title>Information Screen</title>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+	<style type="text/css">
+		body {
+			margin: 0;
+			padding: 0;
+			background: url("images/background.jpg") no-repeat center center fixed;
+			background-size: cover;
+			animation: fade 10s ease-in-out infinite;
+			text-shadow: 0 0 10px #000000;
+			font-family: 'Open Sans', sans-serif;
+			color: #ffffff;
+			font-size: 24px;
+			line-height: 1.5;
+		}
 
-    <div id="file-storage" style="display: none;">
-      <h2>File Storage</h2>
-      <button onclick="createNewFile()">New File</button>
-      <div id="file-list" class="file-list"></div>
-      <div id="file-editor" style="display: none;">
-        <h3 id="file-name"></h3>
-        <textarea id="file-content"></textarea>
-        <button onclick="saveFile()">Save</button>
-        <button onclick="cancelEdit()">Cancel</button>
-        <a id="download-link" download></a>
-      </div>
-    </div>
+		@keyframes fade {
+			0% {
+				background-image: url("images/background1.jpg");
+			}
+			50% {
+				background-image: url("images/background2.jpg");
+			}
+			100% {
+				background-image: url("images/background3.jpg");
+			}
+		}
 
-    <script>
-      var passwordPrompt = document.getElementById("password-prompt");
-      var fileStorage = document.getElementById("file-storage");
-      var fileList = document.getElementById("file-list");
-      var fileEditor = document.getElementById("file-editor");
-      var fileNameElement = document.getElementById("file-name");
-      var fileContentElement = document.getElementById("file-content");
-      var downloadLink = document.getElementById("download-link");
-      var passwordInput = document.getElementById("password");
-      var errorElement = document.getElementById("error");
-      var githubUsername = "guillermoRBcode";
-      var githubRepo = "CabotPages";
+		.logo {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			height: 50px;
+		}
 
-      function checkPassword() {
-        var password = passwordInput.value;
-        if (password === "admin321") {
-passwordPrompt.style.display = "none";
-fileStorage.style.display = "block";
-loadFiles();
-} else {
-errorElement.textContent = "Wrong password.";
+		.time {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			font-size: 48px;
+			font-weight: bold;
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		.links {
+			position: absolute;
+			bottom: 10px;
+			left: 10px;
+			background: url("images/links-background.jpg") no-repeat center center fixed;
+			background-size: cover;
+			padding: 10px;
+			border-radius: 5px;
+		}
+
+		.links a {
+			color: #ffffff;
+			text-decoration: none;
+			margin-right: 20px;
+			font-weight: bold;
+		}
+
+		.weather {
+			position: absolute;
+			top: 60px;
+			left: 50%;
+			transform: translateX(-50%);
+			padding: 20px;
+			background-color:rgb(255,0,0);opacity:0.0;
+			border-radius: 5px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			text-align: center;
+		}
+
+		.weather-icon {
+			height: 100px;
+			margin-bottom: 10px;
+		}
+
+		.temperature {
+			font-size: 48px;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		.weather-description {
+			font-size: 36px;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		.location {
+			font-size: 24px;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+	</style>
+</head>
+<body>
+	<img class="logo" src="images/logo.png" alt="Logo">
+	<div class="weather">
+		<img class="weather-icon">
+		<div class="temperature"></div>
+		<div class="weather-description"></div>
+		<div class="location"></div>
+	</div>
+
+	<div class="time"></div>
+
+	<script>
+		function updateTime() {
+  var date = new Date();
+  var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+  var minutes = date.getMinutes();
+  var seconds = date.getSeconds();
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+  var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
+  document.querySelector(".time").textContent = timeString;
 }
-}
-  function loadFiles() {
-    fileList.innerHTML = "";
-    fetch(`https://api.github.com/repos/${githubUsername}/${githubRepo}/contents/`)
-      .then(response => response.json())
-      .then(data => {
-        data.forEach(file => {
-          if (file.type === "file" && file.name.endsWith(".txt")) {
-            var fileItem = document.createElement("div");
-            fileItem.classList.add("file-item");
-            fileItem.addEventListener("click", () => editFile(file.name, file.download_url));
-            var fileName = document.createElement("h3");
-            fileName.textContent = file.name;
-            var fileSize = document.createElement("p");
-            fileSize.textContent = formatBytes(file.size);
-            fileItem.appendChild(fileName);
-            fileItem.appendChild(fileSize);
-            fileList.appendChild(fileItem);
-          }
-        });
-      })
-      .catch(error => console.error(error));
-  }
 
-  function createNewFile() {
-    var fileName = prompt("Enter the name of the new file:");
-    if (fileName && fileName.endsWith(".txt")) {
-      fetch(`https://api.github.com/repos/${githubUsername}/${githubRepo}/contents/${fileName}`, {
-        method: "PUT",
-        headers: {
-          "Authorization": `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`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: "Create new file",
-          content: ""
-        })
-      })
-        .then(response => response.json())
-        .then(data => {
-          editFile(data.name, data.download_url);
-        })
-        .catch(error => console.error(error));
-    }
-  }
+setInterval(updateTime, 1000);
 
-  function editFile(name, downloadUrl) {
-    fileNameElement.textContent = name;
-    fetch(downloadUrl)
-      .then(response => response.text())
-      .then(data => {
-        fileContentElement.value = atob(data);
-        fileEditor.style.display = "block";
-        fileList.style.display = "none";
-      })
-      .catch(error => console.error(error));
-  }
+function updateWeather() {
+  var apiKey = "f526db4d3273f8c84309e0254c4f0e71";
+  var city = "sarasota";
+  var state = "FL";
+  var country = "US";
+  var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + state + "," + country + "&appid=" + apiKey;
 
-  function saveFile() {
-    var fileName = fileNameElement.textContent;
-    var fileContent = btoa(fileContentElement.value);
-    fetch(`https://api.github.com/repos/${githubUsername}/${githubRepo}/images/${fileName}`, {
-      method: "PUT",
-      headers: {
-        "Authorization": `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`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: "Update file",
-        content: fileContent
-      })
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      console.log("API response:", data);
+      var temp = Math.round((data.main.temp - 273.15) * 9/5 + 32);
+      var description = data.weather[0].description;
+      var iconCode = data.weather[0].icon;
+      var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+
+      var weatherString = temp + "°F " + description;
+      document.querySelector(".temperature").textContent = weatherString;
+
+      var icon = document.createElement("img");
+      icon.setAttribute("src", iconUrl);
+      icon.setAttribute("class", "weather-icon");
+      document.querySelector(".weather").appendChild(icon);
+
+      var locationString = data.name + ", " + data.sys.country;
+      document.querySelector(".location").textContent = locationString;
+      document.querySelector(".weather").classList.remove("hidden");
     })
-      .then(response => response.json())
-      .then(data => {
-        fileEditor.style.display = "none";
-        fileList.style.display = "block";
-        loadFiles();
-      })
-      .catch(error => console.error(error));
-  }
+    .catch(error => console.log(error));
+}
 
-  function cancelEdit() {
-    fileEditor.style.display = "none";
-    fileList.style.display = "block";
-  }
-
-  function formatBytes(bytes, decimals = 2) {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-  }
+updateWeather();
+setInterval(updateWeather, 3600000);
 </script>
-
