@@ -113,52 +113,24 @@
 
 	<div class="time"></div>
 
+	<div class="links">
+		<a href="#">Link 1</a>
+		<a href="#">Link 2</a>
+		<a href="#">Link 3</a>
+		<a href="#">Link 4</a>
+	</div>
+
 	<script>
-		function updateTime() {
-  var date = new Date();
-  var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
-  hours = hours < 10 ? "0" + hours : hours;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  seconds = seconds < 10 ? "0" + seconds : seconds;
-  var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
-  document.querySelector(".time").textContent = timeString;
-}
+		function toggleMenu() {
+			var menu = document.getElementById('menu');
+			if (menu.classList.contains('active')) {
+				menu.classList.remove('active');
+			} else {
+				menu.classList.add('active');
+			}
+		}
+	</script>
 
-setInterval(updateTime, 1000);
+</body>
 
-function updateWeather() {
-  var apiKey = "f526db4d3273f8c84309e0254c4f0e71";
-  var city = "sarasota";
-  var state = "FL";
-  var country = "US";
-  var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + state + "," + country + "&appid=" + apiKey;
-
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      console.log("API response:", data);
-      var temp = Math.round((data.main.temp - 273.15) * 9/5 + 32);
-      var description = data.weather[0].description;
-      var iconCode = data.weather[0].icon;
-      var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
-
-      var weatherString = temp + "°F " + description;
-      document.querySelector(".temperature").textContent = weatherString;
-
-      var icon = document.createElement("img");
-      icon.setAttribute("src", iconUrl);
-      icon.setAttribute("class", "weather-icon");
-      document.querySelector(".weather").appendChild(icon);
-
-      var locationString = data.name + ", " + data.sys.country;
-      document.querySelector(".location").textContent = locationString;
-      document.querySelector(".weather").classList.remove("hidden");
-    })
-    .catch(error => console.log(error));
-}
-
-updateWeather();
-setInterval(updateWeather, 3600000);
-</script>
+</html>
