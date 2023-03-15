@@ -1,136 +1,146 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Information Screen</title>
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
-	<style type="text/css">
-		body {
-			margin: 0;
-			padding: 0;
-			background: url("images/background.jpg") no-repeat center center fixed;
-			background-size: cover;
-			animation: fade 10s ease-in-out infinite;
-			text-shadow: 0 0 10px #000000;
-			font-family: 'Open Sans', sans-serif;
-			color: #ffffff;
-			font-size: 24px;
-			line-height: 1.5;
-		}
+    <title>Information Screen</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            background: url("images/background.jpg") no-repeat center center fixed;
+            background-size: cover;
+            animation: fade 10s ease-in-out infinite;
+            text-shadow: 0 0 10px #000000;
+            font-family: 'Open Sans', sans-serif;
+            color: #ffffff;
+            font-size: 24px;
+            line-height: 1.5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-		@keyframes fade {
-			0% {
-				background-image: url("images/background1.jpg");
-			}
-			50% {
-				background-image: url("images/background2.jpg");
-			}
-			100% {
-				background-image: url("images/background3.jpg");
-			}
-		}
+        @keyframes fade {
+            0% {
+                background-image: url("images/background1.jpg");
+            }
+            50% {
+                background-image: url("images/background2.jpg");
+            }
+            100% {
+                background-image: url("images/background3.jpg");
+            }
+        }
 
-		.logo {
-			position: absolute;
-			top: 10px;
-			left: 10px;
-			height: 50px;
-		}
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            height: 50px;
+        }
 
-		.time {
-			position: absolute;
-			top: 20px;
-			right: 20px;
-			font-size: 48px;
-			font-weight: bold;
-			text-align: right;
-			margin-bottom: 20px;
-		}
+        .clock {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-		.links {
-			position: absolute;
-			bottom: 10px;
-			left: 10px;
-			background: url("images/links-background.jpg") no-repeat center center fixed;
-			background-size: cover;
-			padding: 10px;
-			border-radius: 5px;
-		}
+        .weather {
+            padding: 20px;
+            background-color:rgb(255,0,0);
+            opacity:0.0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
 
-		.links a {
-			color: #ffffff;
-			text-decoration: none;
-			margin-right: 20px;
-			font-weight: bold;
-		}
+        .weather-icon {
+            height: 100px;
+            margin-bottom: 10px;
+        }
 
-		.weather {
-			position: absolute;
-			top: 60px;
-			left: 50%;
-			transform: translateX(-50%);
-			padding: 20px;
-			background-color:rgb(255,0,0);opacity:0.0;
-			border-radius: 5px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			text-align: center;
-		}
+        .temperature {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-		.weather-icon {
-			height: 100px;
-			margin-bottom: 10px;
-		}
+        .weather-description {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-		.temperature {
-			font-size: 48px;
-			font-weight: bold;
-			margin-bottom: 10px;
-		}
+        .location {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-		.weather-description {
-			font-size: 36px;
-			font-weight: bold;
-			margin-bottom: 10px;
-		}
+        .links {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
 
-		.location {
-			font-size: 24px;
-			font-weight: bold;
-			margin-bottom: 10px;
-		}
-	</style>
+        .links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-	<img class="logo" src="images/logo.png" alt="Logo">
-	<div class="weather">
-		<img class="weather-icon">
-		<div class="temperature"></div>
-		<div class="weather-description"></div>
-		<div class="location"></div>
-	</div>
-
-	<div class="time"></div>
-
-	<div class="links">
-		<a href="#">Link 1</a>
-		<a href="#">Link 2</a>
-		<a href="#">Link 3</a>
-		<a href="#">Link 4</a>
-	</div>
-
-	<script>
-		function toggleMenu() {
-			var menu = document.getElementById('menu');
-			if (menu.classList.contains('active')) {
-				menu.classList.remove('active');
-			} else {
-				menu.classList.add('active');
+    <div class="logo"><img src="images/logo.png" alt="Logo"></div>
+    <div class="clock">
+        <div class="time"></div>
+    </div>
+    <div class="weather">
+        <img class="weather-icon">
+        <div class="temperature"></div>
+        <div class="weather-description"></div>
+        <div class="location"></div>
+    </div>
+   <script>
+		function updateTime() {
+			var now = new Date();
+			var hours = now.getHours();
+			var minutes = now.getMinutes();
+			var seconds = now.getSeconds();
+			var meridian = "AM";
+			if (hours > 12) {
+				hours -= 12;
+				meridian = "PM";
 			}
+			hours = hours < 10 ? "0" + hours : hours;
+			minutes = minutes < 10 ? "0" + minutes : minutes;
+			seconds = seconds < 10 ? "0" + seconds : seconds;
+			var timeString = hours + ":" + minutes + ":" + seconds + " " + meridian;
+			document.querySelector(".clock").textContent = timeString;
 		}
+
+		setInterval(updateTime, 1000); // Update time every second
+
+		// Remove links
+		document.querySelector(".links").style.display = "none";
+
+		// Make the whole page vertical like a phone screen
+		document.querySelector("body").style.transform = "rotate(90deg)";
+		document.querySelector("body").style.transformOrigin = "left top";
+		document.querySelector("body").style.width = "100vh";
+		document.querySelector("body").style.height = "100vw";
+
+		// Add clock
+		document.querySelector(".clock").style.position = "absolute";
+		document.querySelector(".clock").style.top = "50%";
+		document.querySelector(".clock").style.left = "50%";
+		document.querySelector(".clock").style.transform = "translate(-50%, -50%)";
 	</script>
-
-</body>
-
-</html>
