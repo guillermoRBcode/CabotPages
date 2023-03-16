@@ -23,28 +23,28 @@
 		var slideshow = document.querySelector('.slideshow');
 
 		function nextImage() {
-			var imageUrlJpg = "images/background (" + imageNumber + ").jpg"; // generate .jpg image URL based on number
-			var imageUrlHeic = "images/background (" + imageNumber + ").HEIC"; // generate .HEIC image URL based on number
-			var imgJpg = new Image();
-			var imgHeic = new Image();
-			imgJpg.onload = function() {
-				slideshow.style.backgroundImage = "url('" + imageUrlJpg + "')"; // change background image to .jpg
+			var imageUrl = "images/background (" + imageNumber + ").jpg"; // generate image URL based on number
+			var img = new Image();
+			img.onload = function() {
+				slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
 				imageNumber++; // increment image number
 				setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 			};
-			imgJpg.onerror = function() {
-				imgHeic.onload = function() {
-					slideshow.style.backgroundImage = "url('" + imageUrlHeic + "')"; // change background image to .HEIC
+			img.onerror = function() {
+				imageUrl = "images/background (" + imageNumber + ").heic";
+				var img = new Image();
+				img.onload = function() {
+					slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
 					imageNumber++; // increment image number
 					setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 				};
-				imgHeic.onerror = function() {
+				img.onerror = function() {
 					imageNumber = 1; // reset image number if no image found
 					setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 				};
-				imgHeic.src = imageUrlHeic; // load .HEIC image
+				img.src = imageUrl; // load image
 			};
-			imgJpg.src = imageUrlJpg; // load .jpg image
+			img.src = imageUrl; // load image
 		}
 
 		nextImage(); // call nextImage() to start slideshow
