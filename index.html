@@ -10,7 +10,7 @@
 		}
 		.slideshow {
 			height: 100vh; /* Set height to full screen height */
-			background-size: contain; /* Keep entire image visible */
+			background-size: cover;
 			background-position: center;
 		}
 	</style>
@@ -23,12 +23,13 @@
 		var slideshow = document.querySelector('.slideshow');
 
 		function nextImage() {
+			var pattern = /background \((\d+)\)\.(jpg|jpeg)/i; // match files with names in the format of "background (number).jpg" or "background (number).jpeg"
 			var imageUrl = "images/background (" + imageNumber + ").jpg"; // generate image URL based on number
 			var img = new Image();
 			img.onload = function() {
 				slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
 				imageNumber++; // increment image number
-				setTimeout(nextImage, 5000); // wait 5 seconds and call nextImage() again
+				setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 			};
 			img.onerror = function() {
 				imageUrl = "images/background (" + imageNumber + ").jpeg"; // try again with .jpeg extension
@@ -36,11 +37,11 @@
 				img2.onload = function() {
 					slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
 					imageNumber++; // increment image number
-					setTimeout(nextImage, 5000); // wait 5 seconds and call nextImage() again
+					setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 				};
 				img2.onerror = function() {
 					imageNumber = 1; // reset image number if no image found
-					setTimeout(nextImage, 5000); // wait 5 seconds and call nextImage() again
+					setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 				};
 				img2.src = imageUrl; // load image with .jpeg extension
 			};
