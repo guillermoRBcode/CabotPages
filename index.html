@@ -12,6 +12,14 @@
 			height: 100vh; /* Set height to full screen height */
 			background-size: cover;
 			background-position: center;
+			animation: scroll 4s linear forwards; /* animate scrolling for 4 seconds */
+			opacity: 0; /* start with opacity 0 */
+		}
+		@keyframes scroll {
+			0% { background-position: 0 0; opacity: 0; }
+			20% { opacity: 1; }
+			80% { opacity: 1; }
+			100% { background-position: 0 100%; opacity: 0; } /* scroll to bottom and fade out */
 		}
 	</style>
 </head>
