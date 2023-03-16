@@ -1,46 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      
-      body {
-        height: 100%;
-      }
-      
-      .slideshow {
-        position: relative;
-        height: 100vh;
-        overflow: hidden;
-        animation: fade 6s infinite;
-        background-image: url("images/background1.jpg");
-        background-size: cover;
-        background-position: center;
-      }
-      
-      .slideshow.active {
-        animation-name: none;
-      }
-      
-      @keyframes fade {
-        0% {
-          background-image: url("images/background1.jpg");
-        }
-        50% {
-          background-image: url("images/background2.jpg");
-        }
-        100% {
-          background-image: url("images/background3.jpg");
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="slideshow active"></div>
-  </body>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mobile Slideshow</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+		.slideshow {
+			height: 100vh; /* Set height to full screen height */
+			background-size: cover;
+			background-position: center;
+			animation-name: fade;
+			animation-duration: 4s;
+			animation-timing-function: ease-in-out;
+			animation-iteration-count: infinite;
+		}
+		@keyframes fade {
+			0% {
+				background-image: url("images/background1.jpg");
+			}
+			50% {
+				background-image: url("images/background2.jpg");
+			}
+			100% {
+				background-image: url("images/background3.jpg");
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="slideshow"></div>
+</body>
 </html>
