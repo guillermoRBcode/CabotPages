@@ -7,13 +7,23 @@
 		body {
 			margin: 0;
 			padding: 0;
-			overflow: hidden; /* Hide horizontal scrollbar */
+			overflow: hidden; /* hide horizontal scrollbar */
 		}
 		.slideshow {
 			height: 100vh; /* Set height to full screen height */
+			width: 200%; /* Set width to twice the screen width */
 			background-size: cover;
-			background-position: left center; /* Set initial position to left */
-			transition: background-position 1s ease-in-out; /* Add transition effect */
+			background-position: left center; /* Set background position to left */
+			animation: slide 4s infinite; /* Set animation duration to 4 seconds and loop infinitely */
+		}
+
+		@keyframes slide {
+			0% {
+				background-position-x: 0%;
+			}
+			100% {
+				background-position-x: 100%;
+			}
 		}
 	</style>
 </head>
@@ -30,7 +40,6 @@
 			img.onload = function() {
 				slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
 				imageNumber++; // increment image number
-				slideshow.style.backgroundPosition = "-100vw center"; // slide image to left
 				setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 			};
 			img.onerror = function() {
