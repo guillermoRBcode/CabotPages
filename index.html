@@ -13,20 +13,6 @@
 			background-size: cover;
 			background-position: center;
 		}
-		@keyframes slideRight {
-			from {
-				transform: translateX(-100%);
-			}
-			to {
-				transform: translateX(0%);
-			}
-		}
-		.animation {
-			animation-name: slideRight;
-			animation-duration: 4s;
-			animation-timing-function: ease-in-out;
-			animation-fill-mode: forwards;
-		}
 	</style>
 </head>
 <body>
@@ -37,25 +23,28 @@
 		var slideshow = document.querySelector('.slideshow');
 
 		function nextImage() {
-			var imageUrl = "images/background" + imageNumber + ".jpg"; // generate image URL based on number
-			var img = new Image();
-			img.onload = function() {
-				slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
-				slideshow.classList.add("animation"); // add animation class
+			var imageUrlJpg = "images/background (" + imageNumber + ").jpg"; // generate .jpg image URL based on number
+			var imageUrlHeic = "images/background (" + imageNumber + ").HEIC"; // generate .HEIC image URL based on number
+			var imgJpg = new Image();
+			var imgHeic = new Image();
+			imgJpg.onload = function() {
+				slideshow.style.backgroundImage = "url('" + imageUrlJpg + "')"; // change background image to .jpg
 				imageNumber++; // increment image number
-				if (imageNumber > 3) {
-					imageNumber = 1; // reset image number if all images have been displayed
-				}
-				setTimeout(function() {
-					slideshow.classList.remove("animation"); // remove animation class after animation ends
-				}, 4000); // wait 4 seconds and remove animation class
 				setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 			};
-			img.onerror = function() {
-				imageNumber = 1; // reset image number if no image found
-				setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
+			imgJpg.onerror = function() {
+				imgHeic.onload = function() {
+					slideshow.style.backgroundImage = "url('" + imageUrlHeic + "')"; // change background image to .HEIC
+					imageNumber++; // increment image number
+					setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
+				};
+				imgHeic.onerror = function() {
+					imageNumber = 1; // reset image number if no image found
+					setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
+				};
+				imgHeic.src = imageUrlHeic; // load .HEIC image
 			};
-			img.src = imageUrl; // load image
+			imgJpg.src = imageUrlJpg; // load .jpg image
 		}
 
 		nextImage(); // call nextImage() to start slideshow
