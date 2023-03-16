@@ -7,11 +7,13 @@
 		body {
 			margin: 0;
 			padding: 0;
+			overflow: hidden; /* Hide horizontal scrollbar */
 		}
 		.slideshow {
 			height: 100vh; /* Set height to full screen height */
 			background-size: cover;
-			background-position: center;
+			background-position: left center; /* Set initial position to left */
+			transition: background-position 1s ease-in-out; /* Add transition effect */
 		}
 	</style>
 </head>
@@ -28,6 +30,7 @@
 			img.onload = function() {
 				slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
 				imageNumber++; // increment image number
+				slideshow.style.backgroundPosition = "-100vw center"; // slide image to left
 				setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 			};
 			img.onerror = function() {
