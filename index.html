@@ -23,7 +23,7 @@
 		var slideshow = document.querySelector('.slideshow');
 
 		function nextImage() {
-			var imageUrl = "images/background (" + imageNumber + ").jpg"; // generate image URL based on number
+			var imageUrl = "background (" + imageNumber + ").jpg"; // generate image URL based on number
 			var img = new Image();
 			img.onload = function() {
 				slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
@@ -31,20 +31,20 @@
 				setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 			};
 			img.onerror = function() {
-				imageUrl = "images/background (" + imageNumber + ").heic";
-				var img = new Image();
-				img.onload = function() {
+				imageUrl = "background (" + imageNumber + ").jpeg"; // try again with .jpeg extension
+				var img2 = new Image();
+				img2.onload = function() {
 					slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
 					imageNumber++; // increment image number
 					setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 				};
-				img.onerror = function() {
+				img2.onerror = function() {
 					imageNumber = 1; // reset image number if no image found
 					setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 				};
-				img.src = imageUrl; // load image
+				img2.src = imageUrl; // load image with .jpeg extension
 			};
-			img.src = imageUrl; // load image
+			img.src = imageUrl; // load image with .jpg extension
 		}
 
 		nextImage(); // call nextImage() to start slideshow
