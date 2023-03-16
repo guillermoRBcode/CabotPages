@@ -31,7 +31,7 @@
 				setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
 			};
 			img.onerror = function() {
-				imageUrl = "images/background (" + imageNumber + ").heic";
+				imageUrl = "images/background (" + imageNumber + ").HEIC";
 				var img = new Image();
 				img.onload = function() {
 					slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
