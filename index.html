@@ -1,57 +1,52 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Slideshow</title>
-    <style>
-      .slideshow {
-        height: 1080px; /* Height of your vertical display */
-        width: 1920px; /* Width of your vertical display */
-        overflow: hidden; /* Make sure images don't overflow container */
-        position: relative; /* Make sure images are positioned relative to container */
-      }
+<head>
+	<title>Slideshow</title>
+	<style type="text/css">
+		.slides {
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
 
-      .slideshow img {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0; /* Hide all images by default */
-        transition: opacity 1s ease-in-out; /* Add transition effect */
-      }
+		.active {
+			display: block;
+			z-index: 1;
+		}
+	</style>
+</head>
+<body>
+	<div class="slideshow-container"></div>
 
-      .slideshow img.active {
-        opacity: 1; /* Show active image */
-      }
-    </style>
-  </head>
-  <body>
-    <div class="slideshow">
-      <!-- Images will be dynamically generated here -->
-    </div>
+	<script>
+		const slideshowContainer = document.querySelector('.slideshow-container');
 
-    <script>
-      // Get list of image filenames
-      const images = ["background.jpg", "background1.jpg", "background2.jpg", "background3.jpg"];
-     
+		fetch('images.json')
+			.then(response => response.json())
+			.then(data => {
+				data.forEach(image => {
+					const slide = document.createElement('img');
+					slide.src = image.url;
+					slide.classList.add('slides');
+					slideshowContainer.appendChild(slide);
+				});
 
-      // Generate HTML for each image
-      images.forEach(image => {
-        const img = document.createElement('img');
-        img.src = `./images/${image}`;
-        document.querySelector('.slideshow').appendChild(img);
-      });
+				let slideIndex = 0;
+				const slides = document.querySelectorAll('.slides');
+				setInterval(() => {
+					// Hide all images
+					slides.forEach(img => img.classList.remove('active'));
 
-      // Start slideshow
-      let slideIndex = 0;
-      const slides = document.querySelectorAll('.slideshow img');
-      setInterval(() => {
-        // Hide all images
-        slides.forEach(img => img.classList.remove('active'));
-
-        // Show next image
-        slides[slideIndex].classList.add('active');
-        slideIndex = (slideIndex + 1) % slides.length;
-}, 5000); // Change image every 5 seconds
+					// Show next image
+					slides[slideIndex].classList.add('active');
+					slideIndex = (slideIndex + 1) % slides.length;
+				}, 5000);
+			})
+			.catch(error => console.error(error));
+	</script>
+</body>
+</html>
