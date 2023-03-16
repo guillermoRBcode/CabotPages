@@ -39,38 +39,33 @@
         Authorization: 'token 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'
       };
       fetch(apiUrl, { headers })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Failed to retrieve image data');
-          }
-          return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-          if (!Array.isArray(data)) {
-            throw new Error('Data is not an array');
+          if (Array.isArray(data)) {
+            // Extract filenames from response data
+            const images = data.map(file => file.name);
+
+            // Generate HTML for each image
+            images.forEach(image => {
+              const img = document.createElement('img');
+              img.src = `./images/${image}`;
+              document.querySelector('.slideshow').appendChild(img);
+            });
+
+            // Start slideshow
+            let slideIndex = 0;
+            const slides = document.querySelectorAll('.slideshow img');
+            setInterval(() => {
+              // Hide all images
+              slides.forEach(img => img.classList.remove('active'));
+
+              // Show next image
+              slides[slideIndex].classList.add('active');
+              slideIndex = (slideIndex + 1) % slides.length;
+            }, 5000); // Change image every 5 seconds
+          } else {
+            console.error('Error fetching images:', data.message);
           }
-
-          // Extract filenames from response data
-          const images = data.map(file => file.name);
-
-          // Generate HTML for each image
-          images.forEach(image => {
-            const img = document.createElement('img');
-            img.src = `./images/${image}`;
-            document.querySelector('.slideshow').appendChild(img);
-          });
-
-          // Start slideshow
-          let slideIndex = 0;
-          const slides = document.querySelectorAll('.slideshow img');
-          setInterval(() => {
-            // Hide all images
-            slides.forEach(img => img.classList.remove('active'));
-
-            // Show next image
-            slides[slideIndex].classList.add('active');
-            slideIndex = (slideIndex + 1) % slides.length;
-          }, 5000); // Change image every 5 seconds
         })
         .catch(error => console.error(error));
     </script>
