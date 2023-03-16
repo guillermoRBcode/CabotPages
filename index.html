@@ -1,146 +1,69 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Information Screen</title>
-    <style type="text/css">
-        body {
-            margin: 0;
-            padding: 0;
-            background: url("images/background.jpg") no-repeat center center fixed;
-            background-size: cover;
-            animation: fade 10s ease-in-out infinite;
-            text-shadow: 0 0 10px #000000;
-            font-family: 'Open Sans', sans-serif;
-            color: #ffffff;
-            font-size: 24px;
-            line-height: 1.5;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+  <head>
+    <meta charset="UTF-8">
+    <title>Slideshow</title>
+    <style>
+      .slideshow {
+        height: 1080px; /* Height of your vertical display */
+        width: 1920px; /* Width of your vertical display */
+        overflow: hidden; /* Make sure images don't overflow container */
+        position: relative; /* Make sure images are positioned relative to container */
+      }
 
-        @keyframes fade {
-            0% {
-                background-image: url("images/background1.jpg");
-            }
-            50% {
-                background-image: url("images/background2.jpg");
-            }
-            100% {
-                background-image: url("images/background3.jpg");
-            }
-        }
+      .slideshow img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0; /* Hide all images by default */
+        transition: opacity 1s ease-in-out; /* Add transition effect */
+      }
 
-        .logo {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            height: 50px;
-        }
-
-        .clock {
-            font-size: 48px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .weather {
-            padding: 20px;
-            background-color:rgb(255,0,0);
-            opacity:0.0;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .weather-icon {
-            height: 100px;
-            margin-bottom: 10px;
-        }
-
-        .temperature {
-            font-size: 48px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .weather-description {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .location {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .links {
-            margin-top: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .links a {
-            color: #ffffff;
-            text-decoration: none;
-            margin: 10px;
-            font-weight: bold;
-        }
+      .slideshow img.active {
+        opacity: 1; /* Show active image */
+      }
     </style>
-</head>
-<body>
-    <div class="logo"><img src="images/logo.png" alt="Logo"></div>
-    <div class="clock">
-        <div class="time"></div>
+  </head>
+  <body>
+    <div class="slideshow">
+      <!-- Images will be dynamically generated here -->
     </div>
-    <div class="weather">
-        <img class="weather-icon">
-        <div class="temperature"></div>
-        <div class="weather-description"></div>
-        <div class="location"></div>
-    </div>
-   <script>
-		function updateTime() {
-			var now = new Date();
-			var hours = now.getHours();
-			var minutes = now.getMinutes();
-			var seconds = now.getSeconds();
-			var meridian = "AM";
-			if (hours > 12) {
-				hours -= 12;
-				meridian = "PM";
-			}
-			hours = hours < 10 ? "0" + hours : hours;
-			minutes = minutes < 10 ? "0" + minutes : minutes;
-			seconds = seconds < 10 ? "0" + seconds : seconds;
-			var timeString = hours + ":" + minutes + ":" + seconds + " " + meridian;
-			document.querySelector(".clock").textContent = timeString;
-		}
 
-		setInterval(updateTime, 1000); // Update time every second
+    <script>
+      // Get list of image filenames from GitHub API
+      const apiUrl = 'https://api.github.com/repos/guillermoRBcode/CabotPages/contents/images';
+      const headers = {
+        Authorization: 'token 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'
+      };
+      fetch(apiUrl, { headers })
+        .then(response => response.json())
+        .then(data => {
+          // Extract filenames from response data
+          const images = data.map(file => file.name);
 
-		// Remove links
-		document.querySelector(".links").style.display = "none";
+          // Generate HTML for each image
+          images.forEach(image => {
+            const img = document.createElement('img');
+            img.src = `./images/${image}`;
+            document.querySelector('.slideshow').appendChild(img);
+          });
 
-		// Make the whole page vertical like a phone screen
-		document.querySelector("body").style.transform = "rotate(90deg)";
-		document.querySelector("body").style.transformOrigin = "left top";
-		document.querySelector("body").style.width = "100vh";
-		document.querySelector("body").style.height = "100vw";
+          // Start slideshow
+          let slideIndex = 0;
+          const slides = document.querySelectorAll('.slideshow img');
+          setInterval(() => {
+            // Hide all images
+            slides.forEach(img => img.classList.remove('active'));
 
-		// Add clock
-		document.querySelector(".clock").style.position = "absolute";
-		document.querySelector(".clock").style.top = "50%";
-		document.querySelector(".clock").style.left = "50%";
-		document.querySelector(".clock").style.transform = "translate(-50%, -50%)";
-	</script>
+            // Show next image
+            slides[slideIndex].classList.add('active');
+            slideIndex = (slideIndex + 1) % slides.length;
+          }, 5000); // Change image every 5 seconds
+        })
+        .catch(error => console.error(error));
+    </script>
+  </body>
+</html>
