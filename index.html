@@ -39,8 +39,17 @@
         Authorization: 'token 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'
       };
       fetch(apiUrl, { headers })
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to retrieve image data');
+          }
+          return response.json();
+        })
         .then(data => {
+          if (!Array.isArray(data)) {
+            throw new Error('Data is not an array');
+          }
+
           // Extract filenames from response data
           const images = data.map(file => file.name);
 
