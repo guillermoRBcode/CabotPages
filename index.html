@@ -12,14 +12,6 @@
 			height: 100vh; /* Set height to full screen height */
 			background-size: cover;
 			background-position: center;
-			animation: scroll 4s linear forwards; /* animate scrolling for 4 seconds */
-			opacity: 0; /* start with opacity 0 */
-		}
-		@keyframes scroll {
-			0% { background-position: 0 0; opacity: 0; }
-			20% { opacity: 1; }
-			80% { opacity: 1; }
-			100% { background-position: 0 100%; opacity: 0; } /* scroll to bottom and fade out */
 		}
 	</style>
 </head>
@@ -27,21 +19,25 @@
 	<div class="slideshow"></div>
 
 	<script>
-		var images = ["images/background1.jpg", "images/background2.jpg", "images/background3.jpg"]; // array of image URLs
-		var currentIndex = 0; // start index
+		var imageNumber = 1; // start number
 		var slideshow = document.querySelector('.slideshow');
 
 		function nextImage() {
-			if (currentIndex < images.length - 1) {
-				currentIndex++; // increment index
-			} else {
-				currentIndex = 0; // reset index
-			}
-
-			slideshow.style.backgroundImage = "url('" + images[currentIndex] + "')"; // change background image
+			var imageUrl = "images/background" + imageNumber + ".jpg"; // generate image URL based on number
+			var img = new Image();
+			img.onload = function() {
+				slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
+				imageNumber++; // increment image number
+				setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
+			};
+			img.onerror = function() {
+				imageNumber = 1; // reset image number if no image found
+				setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
+			};
+			img.src = imageUrl; // load image
 		}
 
-		setInterval(nextImage, 4000); // change image every 4 seconds
+		nextImage(); // call nextImage() to start slideshow
 	</script>
 </body>
 </html>
