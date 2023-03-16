@@ -12,25 +12,28 @@
 			height: 100vh; /* Set height to full screen height */
 			background-size: cover;
 			background-position: center;
-			animation-name: fade;
-			animation-duration: 4s;
-			animation-timing-function: ease-in-out;
-			animation-iteration-count: infinite;
-		}
-		@keyframes fade {
-			0% {
-				background-image: url("images/background1.jpg");
-			}
-			50% {
-				background-image: url("images/background2.jpg");
-			}
-			100% {
-				background-image: url("images/background3.jpg");
-			}
 		}
 	</style>
 </head>
 <body>
 	<div class="slideshow"></div>
+
+	<script>
+		var images = ["images/background1.jpg", "images/background2.jpg", "images/background3.jpg"]; // array of image URLs
+		var currentIndex = 0; // start index
+		var slideshow = document.querySelector('.slideshow');
+
+		function nextImage() {
+			if (currentIndex < images.length - 1) {
+				currentIndex++; // increment index
+			} else {
+				currentIndex = 0; // reset index
+			}
+
+			slideshow.style.backgroundImage = "url('" + images[currentIndex] + "')"; // change background image
+		}
+
+		setInterval(nextImage, 4000); // change image every 4 seconds
+	</script>
 </body>
 </html>
