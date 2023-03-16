@@ -7,23 +7,17 @@
 		body {
 			margin: 0;
 			padding: 0;
-			overflow: hidden; /* hide horizontal scrollbar */
+			overflow: hidden; /* Hide horizontal scroll bar */
 		}
 		.slideshow {
 			height: 100vh; /* Set height to full screen height */
-			width: 200%; /* Set width to twice the screen width */
 			background-size: cover;
-			background-position: left center; /* Set background position to left */
-			animation: slide 4s infinite; /* Set animation duration to 4 seconds and loop infinitely */
+			background-position: center;
+			animation: slide 4s ease-out; /* Add slide animation */
 		}
-
 		@keyframes slide {
-			0% {
-				background-position-x: 0%;
-			}
-			100% {
-				background-position-x: 100%;
-			}
+			from { background-position: left; }
+			to { background-position: right; }
 		}
 	</style>
 </head>
