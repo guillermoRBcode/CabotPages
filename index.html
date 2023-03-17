@@ -7,7 +7,7 @@
 		body {
 			margin: 0;
 			padding: 0;
-			transform: rotate(90deg);
+		transform: rotate(90deg);
 			transform-origin: top left;
 			height: 100vh;
 			overflow: hidden;	
@@ -16,7 +16,7 @@
   			height: 100vh; /* Set height to full screen height */
   			background-size: cover;
   			background-position: center;
-		}
+}
 		.time {
 			position: absolute;
 			top: 90px;
@@ -43,66 +43,57 @@
 	var preloadedImage = new Image();
 
 	function nextImage() {
-	  var maxImageNumber = 57; // set the maximum number of images
-	  var imageNumber = Math.floor(Math.random() * maxImageNumber) + 1; // generate a random image number
-	  var imageUrl = "images/background (" + imageNumber + ").jpg";
-	  var img = new Image();
-	  img.onload = function() {
-	    var oldSlideshow = document.querySelector('.slideshow');
-	    slideshow.style.backgroundImage = "url('" + imageUrl + "')";
-	    preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpg";
-	    setTimeout(function() {
-	      if (oldSlideshow) {
-	        oldSlideshow.style.display = "none";
-	      }
-	      if (oldSlideshow) {
-	        oldSlideshow.style.display = "block";
-	      }
-	    }, 500);
-	    setTimeout(nextImage, 4000);
-	  };
-	  img.onerror = function() {
-	    imageUrl = "images/background (" + imageNumber + ").jpeg";
-	    var img2 = new Image();
-	    img2.onload = function() {
-	      var oldSlideshow = document.querySelector('.slideshow');
-	      slideshow.style.backgroundImage = "url('" + imageUrl + "')";
-	      preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpeg";
-	      setTimeout(function() {
-	        if (oldSlideshow) {
-	          oldSlideshow.style.display = "none";
-	        }
-	        if (oldSlideshow) {
-	          oldSlideshow.style.display = "block";
-	        }
-	      }, 500);
-	      setTimeout(nextImage, 4000);
-	    };
-	    img2.onerror = function() {
-	      var oldSl
-
-var oldSlideshow = document.querySelector('.slideshow');
-if (oldSlideshow) {
-oldSlideshow.style.display = "none";
-slideshow.style.backgroundImage = "url('" + imageUrl + "')";
-preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpeg";
-setTimeout(function() {
-oldSlideshow.style.display = "block";
-}, 500);
-setTimeout(nextImage, 4000);
-} else {
-slideshow.style.backgroundImage = "";
-setTimeout(nextImage, 4000);
-};
-
-img2.src = imageUrl;
-};
-
-img.src = imageUrl;
-};
-
+  var maxImageNumber = 57; // set the maximum number of images
+  var imageNumber = Math.floor(Math.random() * maxImageNumber) + 1; // generate a random image number
+  var imageUrl = "images/background (" + imageNumber + ").jpg";
+  var img = new Image();
+  img.onload = function() {
+    var oldSlideshow = document.querySelector('.slideshow');
+    slideshow.style.backgroundImage = "url('" + imageUrl + "')";
+    preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpg";
+    setTimeout(function() {
+      if (oldSlideshow) {
+        oldSlideshow.style.display = "none";
+      }
+      if (oldSlideshow) {
+        oldSlideshow.style.display = "block";
+      }
+    }, 500);
+    setTimeout(nextImage, 4000);
+  };
+  img.onerror = function() {
+    imageUrl = "images/background (" + imageNumber + ").jpeg";
+    var img2 = new Image();
+    img2.onload = function() {
+      var oldSlideshow = document.querySelector('.slideshow');
+      slideshow.style.backgroundImage = "url('" + imageUrl + "')";
+      preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpeg";
+      setTimeout(function() {
+        if (oldSlideshow) {
+          oldSlideshow.style.display = "none";
+        }
+        if (oldSlideshow) {
+          oldSlideshow.style.display = "block";
+        }
+      }, 500);
+      setTimeout(nextImage, 4000);
+    };
+    img2.onerror = function() {
+      var oldSlideshow = document.querySelector('.slideshow');
+      if (oldSlideshow) {
+        oldSlideshow.style.display = "none";
+        oldSlideshow.style.display = "block"; // add this line to make oldSlideshow visible again
+      } else {
+        slideshow.style.backgroundImage = "";
+      }
+      setTimeout(nextImage, 4000);
+    };
+    img2.src = imageUrl;
+  };
+  img.src = imageUrl;
+}
 preloadedImage.onload = function() {
-// preloading is done
+  // preloading is done
 };
 
 nextImage(); // call nextImage() to start slideshow
@@ -120,7 +111,6 @@ seconds = seconds < 10 ? "0" + seconds : seconds;
 var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
 document.querySelector(".time").textContent = timeString;
 }
-
 </script>
 </body>
 </html>
