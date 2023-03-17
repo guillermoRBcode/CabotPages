@@ -61,55 +61,56 @@
 	var slideshow = document.querySelector('.slideshow');
 
 	function nextImage() {
-    var pattern = /background \((\d+)\)\.(jpg|jpeg)/i; // match files with names in the format of "background (number).jpg" or "background (number).jpeg"
-    var imageUrl = "images/background (" + imageNumber + ").jpg"; // generate image URL based on number
-    var img = new Image();
-    img.onload = function() {
-        var oldSlideshow = document.querySelector('.slideshow.fade-in');
-        slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
-        if (oldSlideshow) {
-            oldSlideshow.classList.remove("fade-in");
-            oldSlideshow.classList.add("fade-out");
-            setTimeout(function() {
-                oldSlideshow.style.display = "none";
-                slideshow.classList.remove("fade-out");
-                slideshow.classList.add("fade-in");
-            }, 2000); // wait 2 seconds for fade
-        } else {
-            slideshow.classList.add("fade-in");
-        }
-        imageNumber++; // increment image number
-        setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
+  var pattern = /background \((\d+)\)\.(jpg|jpeg)/i;
+  var imageUrl = "images/background (" + imageNumber + ").jpg";
+  var img = new Image();
+  img.onload = function() {
+    var oldSlideshow = document.querySelector('.slideshow.fade-in');
+    slideshow.style.backgroundImage = "url('" + imageUrl + "')";
+    if (oldSlideshow) {
+      oldSlideshow.classList.remove("fade-in");
+      oldSlideshow.classList.add("fade-out");
+      setTimeout(function() {
+        oldSlideshow.style.display = "none";
+        slideshow.classList.remove("fade-out");
+        slideshow.classList.add("fade-in");
+        oldSlideshow.style.display = "block"; // add this line to make oldSlideshow visible again
+      }, 2000);
+    } else {
+      slideshow.classList.add("fade-in");
+    }
+    imageNumber++;
+    setTimeout(nextImage, 4000);
+  };
+  img.onerror = function() {
+    imageUrl = "images/background (" + imageNumber + ").jpeg";
+    var img2 = new Image();
+    img2.onload = function() {
+      var oldSlideshow = document.querySelector('.slideshow.fade-in');
+      slideshow.style.backgroundImage = "url('" + imageUrl + "')";
+      if (oldSlideshow) {
+        oldSlideshow.classList.remove("fade-in");
+        oldSlideshow.classList.add("fade-out");
+        setTimeout(function() {
+          oldSlideshow.style.display = "none";
+          slideshow.classList.remove("fade-out");
+          slideshow.classList.add("fade-in");
+          oldSlideshow.style.display = "block"; // add this line to make oldSlideshow visible again
+        }, 2000);
+      } else {
+        slideshow.classList.add("fade-in");
+      }
+      imageNumber++;
+      setTimeout(nextImage, 4000);
     };
-    img.onerror = function() {
-        imageUrl = "images/background (" + imageNumber + ").jpeg"; // try again with .jpeg extension
-        var img2 = new Image();
-        img2.onload = function() {
-            var oldSlideshow = document.querySelector('.slideshow.fade-in');
-            slideshow.style.backgroundImage = "url('" + imageUrl + "')"; // change background image
-            if (oldSlideshow) {
-                oldSlideshow.classList.remove("fade-in");
-                oldSlideshow.classList.add("fade-out");
-                setTimeout(function() {
-                    oldSlideshow.style.display = "none";
-                    slideshow.classList.remove("fade-out");
-                    slideshow.classList.add("fade-in");
-                }, 2000); // wait 2 seconds for fade
-            } else {
-                slideshow.classList.add("fade-in");
-            }
-            imageNumber++; // increment image number
-            setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
-        };
-        img2.onerror = function() {
-            imageNumber = 1; // reset image number if no image found
-            setTimeout(nextImage, 4000); // wait 4 seconds and call nextImage() again
-        };
-        img2.src = imageUrl; // load image with .jpeg extension
+    img2.onerror = function() {
+      imageNumber = 1;
+      setTimeout(nextImage, 4000);
     };
-    img.src = imageUrl; // load image with .jpg extension
+    img2.src = imageUrl;
+  };
+  img.src = imageUrl;
 }
-
 nextImage(); // call nextImage() to start slideshow
 
 setInterval(updateTime, 1000); // call updateTime() every second
