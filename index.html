@@ -61,74 +61,81 @@
 	<div class="time"></div>
 	<script>
 	var imageNumber = 1; // start number
-	var slideshow = document.querySelector('.slideshow');
+var slideshow = document.querySelector('.slideshow');
+var preloadedImage = new Image();
 
-	function nextImage() {
-	  var pattern = /background \((\d+)\)\.(jpg|jpeg)/i;
-	  var imageUrl = "images/background (" + imageNumber + ").jpg";
-	  var img = new Image();
-	  img.onload = function() {
-	    var oldSlideshow = document.querySelector('.slideshow.fade-in');
-	    slideshow.style.backgroundImage = "url('" + imageUrl + "')";
-	    slideshow.classList.add("fade-out");
-	    setTimeout(function() {
-	      if (oldSlideshow) {
-	        oldSlideshow.style.display = "none";
-	      }
-	      slideshow.classList.remove("fade-out");
-	      slideshow.classList.add("fade-in");
-	      if (oldSlideshow) {
-	        oldSlideshow.classList.remove("fade-in");
-	        oldSlideshow.style.display = "block";
-	      }
-	    }, 500);
-	    imageNumber++;
-	    setTimeout(nextImage, 4000);
-	  };
-	  img.onerror = function() {
-	    imageUrl = "images/background (" + imageNumber + ").jpeg";
-	    var img2 = new Image();
-	    img2.onload = function() {
-	      var oldSlideshow = document.querySelector('.slideshow.fade-in');
-	      slideshow.style.backgroundImage = "url('" + imageUrl + "')";
-	      slideshow.classList.add("fade-out");
-	      setTimeout(function() {
-	        if (oldSlideshow) {
-	          oldSlideshow.style.display = "none";
-	        }
-	        slideshow.classList.remove("fade-out");
-	        slideshow.classList.add("fade-in");
-	        if (oldSlideshow) {
-	          oldSlideshow.classList.remove("fade-in");
-	          oldSlideshow.style.display = "block";
-	        }
-	      }, 500);
-	      imageNumber++;
-	      setTimeout(nextImage, 4000);
-	    };
-	   img2.onerror = function() {
-  imageNumber = 1;
-  var oldSlideshow = document.querySelector('.slideshow.fade-in');
-  if (oldSlideshow) {
-    oldSlideshow.classList.remove("fade-in");
-    oldSlideshow.classList.add("fade-out");
+function nextImage() {
+  var pattern = /background \((\d+)\)\.(jpg|jpeg)/i;
+  var imageUrl = "images/background (" + imageNumber + ").jpg";
+  var img = new Image();
+  img.onload = function() {
+    var oldSlideshow = document.querySelector('.slideshow.fade-in');
+    slideshow.style.backgroundImage = "url('" + imageUrl + "')";
+    slideshow.classList.add("fade-out");
+    preloadedImage.src = "images/background (" + (imageNumber + 1) + ").jpg";
     setTimeout(function() {
-      oldSlideshow.style.display = "none";
-      slideshow.style.backgroundImage = "";
+      if (oldSlideshow) {
+        oldSlideshow.style.display = "none";
+      }
       slideshow.classList.remove("fade-out");
       slideshow.classList.add("fade-in");
-      oldSlideshow.style.display = "block"; // add this line to make oldSlideshow visible again
-    }, 2000);
-  } else {
-    slideshow.style.backgroundImage = "";
-    slideshow.classList.add("fade-in");
-  }
-  setTimeout(nextImage, 4000);
+      if (oldSlideshow) {
+        oldSlideshow.classList.remove("fade-in");
+        oldSlideshow.style.display = "block";
+      }
+    }, 500);
+    imageNumber++;
+    setTimeout(nextImage, 4000);
+  };
+  img.onerror = function() {
+    imageUrl = "images/background (" + imageNumber + ").jpeg";
+    var img2 = new Image();
+    img2.onload = function() {
+      var oldSlideshow = document.querySelector('.slideshow.fade-in');
+      slideshow.style.backgroundImage = "url('" + imageUrl + "')";
+      slideshow.classList.add("fade-out");
+      preloadedImage.src = "images/background (" + (imageNumber + 1) + ").jpeg";
+      setTimeout(function() {
+        if (oldSlideshow) {
+          oldSlideshow.style.display = "none";
+        }
+        slideshow.classList.remove("fade-out");
+        slideshow.classList.add("fade-in");
+        if (oldSlideshow) {
+          oldSlideshow.classList.remove("fade-in");
+          oldSlideshow.style.display = "block";
+        }
+      }, 500);
+      imageNumber++;
+      setTimeout(nextImage, 4000);
+    };
+    img2.onerror = function() {
+      imageNumber = 1;
+      var oldSlideshow = document.querySelector('.slideshow.fade-in');
+      if (oldSlideshow) {
+        oldSlideshow.classList.remove("fade-in");
+        oldSlideshow.classList.add("fade-out");
+        setTimeout(function() {
+          oldSlideshow.style.display = "none";
+          slideshow.style.backgroundImage = "";
+          slideshow.classList.remove("fade-out");
+          slideshow.classList.add("fade-in");
+          oldSlideshow.style.display = "block"; // add this line to make oldSlideshow visible again
+        }, 2000);
+      } else {
+        slideshow.style.backgroundImage = "";
+        slideshow.classList.add("fade-in");
+      }
+      setTimeout(nextImage, 4000);
     };
     img2.src = imageUrl;
   };
   img.src = imageUrl;
 }
+
+preloadedImage.onload = function() {
+  // preloading is done
+};
 
 nextImage(); // call nextImage() to start slideshow
 
