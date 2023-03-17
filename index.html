@@ -1,45 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Slideshow</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-        .slideshow {
-            height: 100vh; /* Set height to full screen height */
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            overflow: hidden;
-        }
-        .time {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 200px; /* Increase font-size for bigger clock */
-            font-weight: 700;
-            color: white;
-            text-shadow: 0 0 3px black;
-            text-align: right;
-            border: 0px solid black;
-            padding: 0px;
-            border-radius: 10px;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);    
-        }
-    </style>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mobile Slideshow</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+		.slideshow {
+			height: 100vh; /* Set height to full screen height */
+			background-size: 100% 100%;
+			background-position: center;
+		}
+		.time {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			font-size: 200px; /* Increase font-size for bigger clock */
+			font-weight: 700;
+			color: white;
+			text-shadow: 0 0 3px black;
+			text-align: right;
+			border: 0px solid black;
+			padding: 0px;
+			border-radius: 10px;
+			box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);	
+		}
+	</style>
 </head>
 <body>
-    <div class="slideshow"></div>
-    <div class="time"></div>
-    <script>
-var imageNumber = 1; // start number
-var slideshow = document.querySelector('.slideshow');
-var preloadedImage = new Image();
+	<div class="slideshow"></div>
+	<div class="time"></div>
+	<script>
+	var imageNumber = 1; // start number
+	var slideshow = document.querySelector('.slideshow');
+	var preloadedImage = new Image();
 
-function nextImage() {
+	function nextImage() {
   var maxImageNumber = 27; // set the maximum number of images
   var imageNumber = Math.floor(Math.random() * maxImageNumber) + 1; // generate a random image number
   var imageUrl = "images/background (" + imageNumber + ").jpg";
@@ -88,26 +86,6 @@ function nextImage() {
     img2.src = imageUrl;
   };
   img.src = imageUrl;
-  img2.style.width = '100%'; // add this line to set width of img2 to 100%
-  img2.style.height = 'auto'; // add this line to set height of img2 to auto (maintain aspect ratio)
-  var isHorizontal = img2.width > img2.height;
-  if (isHorizontal) {
-    // create animation for horizontal image
-    var currentPosition = 0;
-    var panAmount = (img2.width - window.innerHeight) / 2;
-    var speed = 50; // adjust this to control animation speed
-    var panInterval = setInterval(function() {
-      currentPosition += speed;
-      if (currentPosition > panAmount) {
-        currentPosition = panAmount;
-        clearInterval(panInterval);
-      }
-      var backgroundPosition = currentPosition + "px 0px";
-      slideshow.style.backgroundPosition = backgroundPosition;
-    }, 20);
-  } else {
-    slideshow.style.backgroundPosition = "center";
-  }
 }
 preloadedImage.onload = function() {
   // preloading is done
@@ -118,10 +96,10 @@ nextImage(); // call nextImage() to start slideshow
 setInterval(updateTime, 1000); // call updateTime() every second
 
 function updateTime() {
-  var date = new Date();
-  var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds
+var date = new Date();
+var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+var minutes = date.getMinutes();
+var seconds = date.getSeconds();
 hours = hours < 10 ? "0" + hours : hours;
 minutes = minutes < 10 ? "0" + minutes : minutes;
 seconds = seconds < 10 ? "0" + seconds : seconds;
