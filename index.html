@@ -1,98 +1,122 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Mobile Slideshow</title>
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-		transform: rotate(90deg);
-			transform-origin: top left;
-			height: 100vh;
-			overflow: hidden;	
-		}
-		.slideshow {
-  			height: 100vh; /* Set height to full screen height */
-  			background-size: cover;
-  			background-position: center;
-}
-		.time {
-			position: absolute;
-			top: 90px;
-			right: 10px;
-			font-size: 200px; /* Increase font-size for bigger clock */
-			font-weight: 700;
-			color: white;
-			text-shadow: 0 0 3px black;
-			text-align: right;
-			border: 0px solid black;
-			padding: 0px;
-			border-radius: 10px;
-			box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-			margin-top: 5mm; /* Add this to move the clock down */
-		}
-	</style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile Slideshow</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      transform: rotate(90deg);
+      transform-origin: top left;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slideshow {
+      height: 100vh; /* Set height to full screen height */
+      background-size: cover;
+      background-position: center;
+      transition: background-image 0.5s ease-in-out; /* Add transition effect */
+    }
+
+    .time {
+      position: absolute;
+      top: 90px;
+      right: 10px;
+      font-size: 200px; /* Increase font-size for bigger clock */
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 0 3px black;
+      text-align: right;
+      border: 0px solid black;
+      padding: 0px;
+      border-radius: 10px;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+      margin-top: 5mm; /* Add this to move the clock down */
+    }
+  </style>
 </head>
+
 <body>
-	<div class="slideshow"></div>
-	<div class="time"></div>
-	<script>
-	var imageNumber = 1; // start number
-	var slideshow = document.querySelector('.slideshow');
-	var preloadedImage = new Image();
-var nextImage = new Image();
-var slideshow = document.querySelector('.slideshow');
-var hiddenSlideshow = document.createElement('div');
-hiddenSlideshow.style.display = 'none';
-document.body.appendChild(hiddenSlideshow);
+  <div class="slideshow"></div>
+  <div class="time"></div>
 
-function next() {
-  var maxImageNumber = 57;
-  var imageNumber = Math.floor(Math.random() * maxImageNumber) + 1;
-  var imageUrl = "images/background (" + imageNumber + ").jpg";
-  nextImage.onload = function() {
-    hiddenSlideshow.style.backgroundImage = "url('" + imageUrl + "')";
-    preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpg";
-  };
-  nextImage.src = imageUrl;
-}
+  <script>
+    var imageNumber = 1; // start number
+    var slideshow = document.querySelector('.slideshow');
+    var preloadedImage = new Image();
 
-function showNext() {
-  var oldSlideshow = slideshow;
-  slideshow = hiddenSlideshow;
-  hiddenSlideshow = oldSlideshow;
-  slideshow.style.opacity = "0";
-  hiddenSlideshow.style.display = 'none';
-  slideshow.style.display = 'block';
-  setTimeout(next, 4000);
-}
+    function nextImage() {
+      var maxImageNumber = 57; // set the maximum number of images
+      var imageNumber = Math.floor(Math.random() * maxImageNumber) + 1; // generate a random image number
+      var imageUrl = "images/background (" + imageNumber + ").jpg";
+      var img = new Image();
+      img.onload = function() {
+        var oldSlideshow = document.querySelector('.slideshow');
+        slideshow.style.backgroundImage = "url('" + imageUrl + "')";
+        preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpg";
+        setTimeout(function() {
+          if (oldSlideshow) {
+            oldSlideshow.style.display = "none";
+          }
+          if (oldSlideshow) {
+            oldSlideshow.style.display = "block";
+          }
+        }, 500);
+        setTimeout(nextImage, 4000);
+      };
+      img.onerror = function() {
+        imageUrl = "images/background (" + imageNumber + ").jpeg";
+        var img2 = new Image();
+        img2.onload = function() {
+          var oldSlideshow = document.querySelector('.slideshow');
+          slideshow.style.backgroundImage = "url('" + imageUrl + "')";
+          preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpeg";
+          setTimeout(function() {
+            if (oldSlideshow) {
+              oldSlideshow.style.display = "none";
+            }
+            if (oldSlideshow) {
+              oldSlideshow.style.display = "block";
+            }
+          }, 500);
+          setTimeout(nextImage, 4000);
+        };
+        img2.onerror = function() {
+          var oldSlideshow = document.querySelector('.slideshow');
+          if (oldSlideshow) {
+            oldSlideshow.style.display = "none";
+            oldSlideshow.style.display = "block"; // add this line to make oldSlideshow visible again
+                    } else {
+            slideshow.style.backgroundImage = "";
+          }
+          setTimeout(nextImage, 4000);
+        };
+        img2.src = imageUrl;
+      };
+      img.src = imageUrl;
+    }
 
-preloadedImage.onload = function() {
-  next();
-  setInterval(updateTime, 1000);
-};
+    preloadedImage.onload = function() {
+      // preloading is done
+    };
 
-function updateTime() {
-  var date = new Date();
-  var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
-  hours = hours < 10 ? "0" + hours : hours;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  seconds = seconds < 10 ? "0" + seconds : seconds;
-  var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
-  document.querySelector(".time").textContent = timeString;
-}
+    nextImage(); // call nextImage() to start slideshow
 
-nextImage.onerror = function() {
-  setTimeout(showNext, 0);
-}
+    setInterval(updateTime, 1000); // call updateTime() every second
 
-nextImage.onload = function() {
-  slideshow.style.backgroundImage = "url('" + nextImage.src + "')";
-  setTimeout(showNext, 500);
-}
-</script>
+    function updateTime() {
+      var date = new Date();
+      var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+      var minutes = date.getMinutes();
+      var seconds = date.getSeconds();
+      hours = hours < 10 ? "0" + hours : hours;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+      var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
+      document.querySelector(".time").textContent = timeString;
+    }
+  </script>
 </body>
 </html>
