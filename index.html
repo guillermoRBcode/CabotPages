@@ -27,33 +27,6 @@
 			border-radius: 10px;
 			box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);	
 		}
-
-/* Add fade-in and fade-out classes */
-.fade-in {
-	animation: fade-in 1s;
-}
-.fade-out {
-	animation: fade-out 1s;
-}
-
-@keyframes fade-in {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-
-@keyframes fade-out {
-	from {
-		opacity: 1;
-	}
-	to {
-		opacity: 0;
-		transform: scale(1.2); /* Optional: add a scale effect */
-	}
-}
 	</style>
 </head>
 <body>
@@ -69,18 +42,14 @@ function nextImage() {
   var imageUrl = "images/background (" + imageNumber + ").jpg";
   var img = new Image();
   img.onload = function() {
-    var oldSlideshow = document.querySelector('.slideshow.fade-in');
+    var oldSlideshow = document.querySelector('.slideshow');
     slideshow.style.backgroundImage = "url('" + imageUrl + "')";
-    slideshow.classList.add("fade-out");
     preloadedImage.src = "images/background (" + (imageNumber + 1) + ").jpg";
     setTimeout(function() {
       if (oldSlideshow) {
         oldSlideshow.style.display = "none";
       }
-      slideshow.classList.remove("fade-out");
-      slideshow.classList.add("fade-in");
       if (oldSlideshow) {
-        oldSlideshow.classList.remove("fade-in");
         oldSlideshow.style.display = "block";
       }
     }, 500);
@@ -91,18 +60,14 @@ function nextImage() {
     imageUrl = "images/background (" + imageNumber + ").jpeg";
     var img2 = new Image();
     img2.onload = function() {
-      var oldSlideshow = document.querySelector('.slideshow.fade-in');
+      var oldSlideshow = document.querySelector('.slideshow');
       slideshow.style.backgroundImage = "url('" + imageUrl + "')";
-      slideshow.classList.add("fade-out");
       preloadedImage.src = "images/background (" + (imageNumber + 1) + ").jpeg";
       setTimeout(function() {
         if (oldSlideshow) {
           oldSlideshow.style.display = "none";
         }
-        slideshow.classList.remove("fade-out");
-        slideshow.classList.add("fade-in");
         if (oldSlideshow) {
-          oldSlideshow.classList.remove("fade-in");
           oldSlideshow.style.display = "block";
         }
       }, 500);
@@ -111,20 +76,12 @@ function nextImage() {
     };
     img2.onerror = function() {
       imageNumber = 1;
-      var oldSlideshow = document.querySelector('.slideshow.fade-in');
+      var oldSlideshow = document.querySelector('.slideshow');
       if (oldSlideshow) {
-        oldSlideshow.classList.remove("fade-in");
-        oldSlideshow.classList.add("fade-out");
-        setTimeout(function() {
-          oldSlideshow.style.display = "none";
-          slideshow.style.backgroundImage = "";
-          slideshow.classList.remove("fade-out");
-          slideshow.classList.add("fade-in");
-          oldSlideshow.style.display = "block"; // add this line to make oldSlideshow visible again
-        }, 2000);
+        oldSlideshow.style.display = "none";
+        oldSlideshow.style.display = "block"; // add this line to make oldSlideshow visible again
       } else {
         slideshow.style.backgroundImage = "";
-        slideshow.classList.add("fade-in");
       }
       setTimeout(nextImage, 4000);
     };
@@ -142,18 +99,17 @@ nextImage(); // call nextImage() to start slideshow
 setInterval(updateTime, 1000); // call updateTime() every second
 
 function updateTime() {
-  var date = new Date();
-  var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
-  hours = hours < 10 ? "0" + hours : hours;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  seconds = seconds < 10 ? "0" + seconds : seconds;
-  var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
-  document.querySelector(".time").textContent = timeString;
+var date = new Date();
+var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+var minutes = date.getMinutes();
+var seconds = date.getSeconds();
+hours = hours < 10 ? "0" + hours : hours;
+minutes = minutes < 10 ? "0" + minutes : minutes;
+seconds = seconds < 10 ? "0" + seconds : seconds;
+var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
+document.querySelector(".time").textContent = timeString;
 }
 </script>
+
 </body>
 </html>
-
-	    
