@@ -10,9 +10,8 @@
 		}
 		.slideshow {
 			height: 100vh; /* Set height to full screen height */
-			background-size: contain;
+			background-size: 100% 100%;
 			background-position: center;
-			background-repeat: no-repeat;
 		}
 		.time {
 			position: absolute;
@@ -37,53 +36,54 @@
 	var imageNumber = 1; // start number
 	var slideshow = document.querySelector('.slideshow');
 	var preloadedImage = new Image();
-		function nextImage() {
-	var maxImageNumber = 27; // set the maximum number of images
-	var imageNumber = Math.floor(Math.random() * maxImageNumber) + 1; // generate a random image number
-	var imageUrl = "images/background (" + imageNumber + ").jpg";
-	var img = new Image();
-	img.onload = function() {
-		var oldSlideshow = document.querySelector('.slideshow');
-		slideshow.style.backgroundImage = "url('" + imageUrl + "')";
-		preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpg";
-		setTimeout(function() {
-			if (oldSlideshow) {
-				oldSlideshow.style.display = "none";
-			}
-			if (oldSlideshow) {
-				oldSlideshow.style.display = "block";
-			}
-		}, 500);
-		setTimeout(nextImage, 4000);
-	};
-	img.onerror = function() {
-		imageUrl = "images/background (" + imageNumber + ").jpeg";
-		var img2 = new Image();
-		img2.onload = function() {
-			var oldSlideshow = document.querySelector('.slideshow');
-			slideshow.style.backgroundImage = "url('" + imageUrl + "')";
-			preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpeg";
-			setTimeout(function() {
-				if (oldSlideshow) {
-					oldSlideshow.style.display = "none";
-				}
-				if (oldSlideshow) {
-					oldSlideshow.style.display = "block";
-				}
-			}, 500);
-			setTimeout(nextImage, 4000);
-		};
-		img2.onerror = function() {
-			var oldSlideshow = document.querySelector('.slideshow');
-			if (oldSlideshow) {
-				oldSlideshow.style.display = "none";
-				oldSlideshow.style.display = "block"; // add this line to make oldSlideshow visible again
-			} else {
-				slideshow.style.backgroundImage = "";
-			}
-			setTimeout(nextImage, 4000);
-		};
-img2.src = imageUrl;
+
+	function nextImage() {
+  var maxImageNumber = 27; // set the maximum number of images
+  var imageNumber = Math.floor(Math.random() * maxImageNumber) + 1; // generate a random image number
+  var imageUrl = "images/background (" + imageNumber + ").jpg";
+  var img = new Image();
+  img.onload = function() {
+    var oldSlideshow = document.querySelector('.slideshow');
+    slideshow.style.backgroundImage = "url('" + imageUrl + "')";
+    preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpg";
+    setTimeout(function() {
+      if (oldSlideshow) {
+        oldSlideshow.style.display = "none";
+      }
+      if (oldSlideshow) {
+        oldSlideshow.style.display = "block";
+      }
+    }, 500);
+    setTimeout(nextImage, 4000);
+  };
+  img.onerror = function() {
+    imageUrl = "images/background (" + imageNumber + ").jpeg";
+    var img2 = new Image();
+    img2.onload = function() {
+      var oldSlideshow = document.querySelector('.slideshow');
+      slideshow.style.backgroundImage = "url('" + imageUrl + "')";
+      preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpeg";
+      setTimeout(function() {
+        if (oldSlideshow) {
+          oldSlideshow.style.display = "none";
+        }
+        if (oldSlideshow) {
+          oldSlideshow.style.display = "block";
+        }
+      }, 500);
+      setTimeout(nextImage, 4000);
+    };
+    img2.onerror = function() {
+      var oldSlideshow = document.querySelector('.slideshow');
+      if (oldSlideshow) {
+        oldSlideshow.style.display = "none";
+        oldSlideshow.style.display = "block"; // add this line to make oldSlideshow visible again
+      } else {
+        slideshow.style.backgroundImage = "";
+      }
+      setTimeout(nextImage, 4000);
+    };
+    img2.src = imageUrl;
   };
   img.src = imageUrl;
 }
@@ -96,34 +96,16 @@ nextImage(); // call nextImage() to start slideshow
 setInterval(updateTime, 1000); // call updateTime() every second
 
 function updateTime() {
-  var date = new Date();
-  var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
-  hours = hours < 10 ? "0" + hours : hours;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  seconds = seconds < 10 ? "0" + seconds : seconds;
-  var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
-  document.querySelector(".time").textContent = timeString;
+var date = new Date();
+var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+var minutes = date.getMinutes();
+var seconds = date.getSeconds();
+hours = hours < 10 ? "0" + hours : hours;
+minutes = minutes < 10 ? "0" + minutes : minutes;
+seconds = seconds < 10 ? "0" + seconds : seconds;
+var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
+document.querySelector(".time").textContent = timeString;
 }
-
-window.addEventListener("resize", function() {
-  var imageRatio = img.width / img.height;
-  var windowRatio = window.innerWidth / window.innerHeight;
-  if (imageRatio > windowRatio) {
-    var animationTime = (img.width - window.innerWidth) * 10;
-    var startPosition = img.width - window.innerWidth;
-    var currentPosition = startPosition;
-    var animation = setInterval(function() {
-      currentPosition--;
-      slideshow.style.backgroundPosition = currentPosition + "px 0";
-      if (currentPosition < -startPosition) {
-        clearInterval(animation);
-        slideshow.style.backgroundPosition = "center";
-      }
-    }, animationTime / (startPosition * 2));
-  }
-});
 </script>
 </body>
 </html>
