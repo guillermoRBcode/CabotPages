@@ -37,7 +37,7 @@
   <div class="time"></div>
   <script>
     var imageNumbers = []; // array to store displayed image numbers
-    var maxImageNumber = 67; // set the maximum number of images
+    var maxImageNumber = 91; // set the maximum number of images
     var slideshow = document.querySelector('.slideshow');
     var preloadedImage = new Image();
 
@@ -55,12 +55,12 @@
         imageNumbers = []; // reset array of displayed images when all images have been shown
       }
 
-      var imageUrl = "images/background (" + imageNumber + ").jpg";
+      var imageUrl = "images/background (" + imageNumber + ").png";
       var img = new Image();
       img.onload = function() {
         var oldSlideshow = document.querySelector('.slideshow');
         slideshow.style.backgroundImage = "url('" + imageUrl + "')";
-        preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").jpg";
+        preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").png";
       };
       img.src = imageUrl;
     }
