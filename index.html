@@ -10,16 +10,26 @@
     }
 
     .slideshow {
-      height: 100vh; /* Set height to full screen height */
+      position: absolute;
+      height: 100vh;
+      width: 100vw;
       background-size: cover;
       background-position: center;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      z-index: 0;
+    }
+
+    .visible {
+      opacity: 1;
+      z-index: 1;
     }
 
     .time {
       position: absolute;
       top: 90px;
       right: 10px;
-      font-size: 200px; /* Increase font-size for bigger clock */
+      font-size: 200px;
       font-weight: 700;
       color: white;
       text-shadow: 0 0 3px black;
@@ -28,44 +38,72 @@
       padding: 0px;
       border-radius: 10px;
       box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-      margin-top: 5mm; /* Add this to move the clock down */
+      margin-top: 5mm;
     }
   </style>
 </head>
 <body>
-  <div class="slideshow"></div>
+  <div class="slideshow visible" id="slideshow1"></div>
+  <div class="slideshow" id="slideshow2"></div>
   <div class="time"></div>
   <script>
-    var imageNumbers = []; // array to store displayed image numbers
-    var maxImageNumber = 91; // set the maximum number of images
-    var slideshow = document.querySelector('.slideshow');
-    var preloadedImage = new Image();
+    var imageNumbers = [];
+    var maxImageNumber = 54;
+    var slideshow1 = document.querySelector('#slideshow1');
+    var slideshow2 = document.querySelector('#slideshow2');
+    var currentSlideshow = slideshow1;
 
-    function nextImage() {
-      var imageNumber = Math.floor(Math.random() * maxImageNumber) + 1; // generate a random image number
-
-      // check if image number has already been displayed
+    function changeImage() {
+      var imageNumber = Math.floor(Math.random() * maxImageNumber) + 1;
       while (imageNumbers.includes(imageNumber)) {
-        imageNumber = Math.floor(Math.random() * maxImageNumber) + 1; // generate a new random image number
+        imageNumber = Math.floor(Math.random() * maxImageNumber) + 1;
+      }
+      imageNumbers.push(imageNumber);
+      if (imageNumbers.length > 3) {
+        imageNumbers.shift();
       }
 
-      imageNumbers.push(imageNumber); // add image number to array of displayed images
-
-      if (imageNumbers.length === maxImageNumber) {
-        imageNumbers = []; // reset array of displayed images when all images have been shown
-      }
-
-      var imageUrl = "images/background (" + imageNumber + ").png";
+      var imageUrl = "images/background (" + imageNumber + ").jpg";
       var img = new Image();
       img.onload = function() {
-        var oldSlideshow = document.querySelector('.slideshow');
-        slideshow.style.backgroundImage = "url('" + imageUrl + "')";
-        preloadedImage.src = "images/background (" + ((imageNumber % maxImageNumber) + 1) + ").png";
+        var otherSlideshow = currentSlideshow === slideshow1 ? slideshow2 : slideshow1;
+        otherSlideshow.style.backgroundImage = "url('" + imageUrl + "')";
+        
+        // Add the 'no-transition' class to the clock element before the opacity transition
+        var clockElement = document.querySelector('.time');
+        clockElement.classList.add('no-transition');
+        
+        otherSlideshow.classList.add('visible');
+        currentSlideshow.classList.remove('visible');
+        currentSlideshow = otherSlideshow;
+        
+        // Remove the 'no-transition' class from the clock element after the opacity transition
+        clockElement.classList.remove('no-transition');
+        
+        preloadNextImages();
       };
       img.src = imageUrl;
     }
 
-    setInterval(nextImage, 5000); // call nextImage() every 5 seconds
+    function preloadNextImages() {
+      for (var i = 1; i <= 2; i++) {
+        var preloadImageNumber = Math.floor(Math.random() * maxImageNumber) + 1;
+        while (imageNumbers.includes(preloadImageNumber)) {
+          preloadImageNumber = Math.floor(Math.random() * maxImageNumber) + 1;
+        }
+        imageNumbers.push(preloadImageNumber);
+        if (imageNumbers.length > 3) {
+          imageNumbers.shift();
+        }
+
+        var preloadImageUrl = "images/background (" + preloadImageNumber + ").jpg";
+        var preloadImg = new Image();
+        preloadImg.src = preloadImageUrl;
+      }
+    }
+
+    changeImage();
+    setInterval(changeImage, 4000);
 
     function updateTime() {
       var date = new Date();
@@ -79,7 +117,7 @@
       document.querySelector(".time").textContent = timeString;
     }
 
-    setInterval(updateTime, 1000); // call updateTime() every second
+    setInterval(updateTime, 1000);
   </script>
 </body>
 </html>
