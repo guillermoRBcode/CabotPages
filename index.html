@@ -7,6 +7,7 @@
     body {
       margin: 0;
       padding: 0;
+      position: relative; /* Add position relative to body */
     }
 
     .slideshow {
@@ -28,8 +29,8 @@
     .time {
       position: absolute;
       top: 90px;
-      right: 10px;
-      font-size: 200px;
+      right: 99=0px;
+      font-size: 170px;
       font-weight: 700;
       color: white;
       text-shadow: 0 0 3px black;
@@ -39,6 +40,7 @@
       border-radius: 10px;
       box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
       margin-top: 5mm;
+      z-index: 2; /* Set a higher z-index to keep the clock on top */
     }
   </style>
 </head>
@@ -48,7 +50,7 @@
   <div class="time"></div>
   <script>
     var imageNumbers = [];
-    var maxImageNumber = 54;
+    var maxImageNumber = 91;
     var slideshow1 = document.querySelector('#slideshow1');
     var slideshow2 = document.querySelector('#slideshow2');
     var currentSlideshow = slideshow1;
@@ -63,23 +65,14 @@
         imageNumbers.shift();
       }
 
-      var imageUrl = "images/background (" + imageNumber + ").jpg";
+      var imageUrl = "images/background (" + imageNumber + ").png";
       var img = new Image();
       img.onload = function() {
         var otherSlideshow = currentSlideshow === slideshow1 ? slideshow2 : slideshow1;
         otherSlideshow.style.backgroundImage = "url('" + imageUrl + "')";
-        
-        // Add the 'no-transition' class to the clock element before the opacity transition
-        var clockElement = document.querySelector('.time');
-        clockElement.classList.add('no-transition');
-        
         otherSlideshow.classList.add('visible');
         currentSlideshow.classList.remove('visible');
         currentSlideshow = otherSlideshow;
-        
-        // Remove the 'no-transition' class from the clock element after the opacity transition
-        clockElement.classList.remove('no-transition');
-        
         preloadNextImages();
       };
       img.src = imageUrl;
@@ -96,7 +89,7 @@
           imageNumbers.shift();
         }
 
-        var preloadImageUrl = "images/background (" + preloadImageNumber + ").jpg";
+        var preloadImageUrl = "images/background (" + preloadImageNumber + ").png";
         var preloadImg = new Image();
         preloadImg.src = preloadImageUrl;
       }
@@ -116,7 +109,6 @@
       var timeString = hours + ":" + minutes + ":" + seconds + " " + (date.getHours() > 12 ? "PM" : "AM");
       document.querySelector(".time").textContent = timeString;
     }
-
     setInterval(updateTime, 1000);
   </script>
 </body>
