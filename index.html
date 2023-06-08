@@ -29,7 +29,7 @@
     .time {
       position: absolute;
       top: 90px;
-      right: 99=0px;
+      right: 90px;
       font-size: 170px;
       font-weight: 700;
       color: white;
@@ -42,27 +42,79 @@
       margin-top: 5mm;
       z-index: 2; /* Set a higher z-index to keep the clock on top */
     }
+
+    .image-counter {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 0 3px black;
+      z-index: 2;
+    }
+
+    #debug-menu {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: white;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      z-index: 3; /* Set a higher z-index for the debug menu */
+    }
+
+    #debug-menu table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    #debug-menu th,
+    #debug-menu td {
+      padding: 5px;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
   <div class="slideshow visible" id="slideshow1"></div>
   <div class="slideshow" id="slideshow2"></div>
   <div class="time"></div>
+  <div class="image-counter"></div>
+  <div id="debug-menu" style="display: none;"></div>
   <script>
     var imageNumbers = [];
     var maxImageNumber = 91;
+    var maxBlacklistSize = 5; // Number of images to blacklist
+    var blacklist = [];
+    var imageCount = {}; // Object to store the count of each image number
     var slideshow1 = document.querySelector('#slideshow1');
     var slideshow2 = document.querySelector('#slideshow2');
     var currentSlideshow = slideshow1;
+    var imageCounter = document.querySelector('.image-counter'); // Reference to the image counter element
+    var imageCounter = document.createElement('div');
+    imageCounter.className = 'image-counter';
+    document.body.appendChild(imageCounter);
+
+    function updateImageCounter() {
+      var currentImageNumber = Object.keys(imageCount).length;
+      imageCounter.textContent = currentImageNumber + " / " + maxImageNumber + " images";
+    }
+
+    // Call updateImageCounter() after defining the function to set the initial value
+    updateImageCounter();
 
     function changeImage() {
-      var imageNumber = Math.floor(Math.random() * maxImageNumber) + 1;
-      while (imageNumbers.includes(imageNumber)) {
-        imageNumber = Math.floor(Math.random() * maxImageNumber) + 1;
+      var imageNumber = getRandomImageNumber();
+      while (blacklist.includes(imageNumber)) {
+        imageNumber = getRandomImageNumber();
       }
-      imageNumbers.push(imageNumber);
-      if (imageNumbers.length > 5) {
-        imageNumbers.shift();
+      blacklist.push(imageNumber);
+      if (blacklist.length > maxBlacklistSize) {
+        blacklist.shift();
       }
 
       var imageUrl = "images/background (" + imageNumber + ").png";
@@ -73,26 +125,91 @@
         otherSlideshow.classList.add('visible');
         currentSlideshow.classList.remove('visible');
         currentSlideshow = otherSlideshow;
+        updateImageCount(imageNumber); // Update the count for the current image
         preloadNextImages();
       };
       img.src = imageUrl;
     }
 
+    function getRandomImageNumber() {
+      return Math.floor(Math.random() * maxImageNumber) + 1;
+    }
+
     function preloadNextImages() {
       for (var i = 1; i <= 2; i++) {
-        var preloadImageNumber = Math.floor(Math.random() * maxImageNumber) + 1;
-        while (imageNumbers.includes(preloadImageNumber)) {
-          preloadImageNumber = Math.floor(Math.random() * maxImageNumber) + 1;
+        var preloadImageNumber = getRandomImageNumber();
+        while (blacklist.includes(preloadImageNumber)) {
+          preloadImageNumber = getRandomImageNumber();
         }
-        imageNumbers.push(preloadImageNumber);
-        if (imageNumbers.length > 3) {
-          imageNumbers.shift();
+        blacklist.push(preloadImageNumber);
+        if (blacklist.length > maxBlacklistSize) {
+          blacklist.shift();
         }
 
         var preloadImageUrl = "images/background (" + preloadImageNumber + ").png";
         var preloadImg = new Image();
         preloadImg.src = preloadImageUrl;
       }
+    }
+
+    function updateImageCount(imageNumber) {
+      if (imageCount[imageNumber]) {
+        imageCount[imageNumber]++;
+      } else {
+        imageCount[imageNumber] = 1;
+      }
+      updateDebugMenuContent(); // Update the debug menu when the image count changes
+      updateImageCounter(); // Update the image counter
+    }
+
+    function updateImageCounter() {
+      var currentImageNumber = Object.keys(imageCount).length;
+      imageCounter.textContent = currentImageNumber + " / " + maxImageNumber + " images";
+    }
+
+    function toggleDebugMenu() {
+      var debugMenu = document.getElementById('debug-menu');
+      if (debugMenu.style.display === 'none') {
+        showDebugMenu(debugMenu);
+      } else {
+        hideDebugMenu(debugMenu);
+      }
+    }
+
+    function showDebugMenu(debugMenu) {
+      debugMenu.style.display = 'block';
+      updateDebugMenuContent();
+    }
+
+    function hideDebugMenu(debugMenu) {
+      debugMenu.style.display = 'none';
+    }
+
+    function updateDebugMenuContent() {
+      var debugMenu = document.getElementById('debug-menu');
+      var table = document.createElement('table');
+      var headerRow = document.createElement('tr');
+      var headerCell1 = document.createElement('th');
+      headerCell1.textContent = 'Image';
+      var headerCell2 = document.createElement('th');
+      headerCell2.textContent = 'Count';
+      headerRow.appendChild(headerCell1);
+      headerRow.appendChild(headerCell2);
+      table.appendChild(headerRow);
+
+      for (var i = 1; i <= maxImageNumber; i++) {
+        var imageRow = document.createElement('tr');
+        var imageCell = document.createElement('td');
+        imageCell.textContent = 'P' + i;
+        var countCell = document.createElement('td');
+        countCell.textContent = imageCount[i] || 0;
+        imageRow.appendChild(imageCell);
+        imageRow.appendChild(countCell);
+        table.appendChild(imageRow);
+      }
+
+      debugMenu.innerHTML = '';
+      debugMenu.appendChild(table);
     }
 
     changeImage();
@@ -110,6 +227,21 @@
       document.querySelector(".time").textContent = timeString;
     }
     setInterval(updateTime, 1000);
+
+    document.addEventListener('keydown', function(event) {
+      if ( event.key === '`') {
+        toggleDebugMenu();
+      }
+    });
+
+    // Add the download.png image at the bottom left corner
+    var downloadImage = document.createElement('img');
+    downloadImage.src = "images/download.png";
+    downloadImage.style.position = "fixed";
+    downloadImage.style.bottom = "3px";
+    downloadImage.style.left = "2px";
+    downloadImage.style.zIndex = "2";
+    document.body.appendChild(downloadImage);
   </script>
 </body>
 </html>
